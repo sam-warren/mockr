@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -45,9 +44,7 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              API Requests
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">API Requests</CardTitle>
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -66,16 +63,12 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">7</div>
-            <p className="text-xs text-muted-foreground">
-              +2 from last month
-            </p>
+            <p className="text-xs text-muted-foreground">+2 from last month</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Usage Quota
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">Usage Quota</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -111,9 +104,7 @@ export default function DashboardPage() {
                         Generated {100 * i} user records
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {new Date(
-                          Date.now() - i * 3600000
-                        ).toLocaleString()}
+                        {new Date(Date.now() - i * 3600000).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -135,9 +126,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>
-              Common tasks and shortcuts
-            </CardDescription>
+            <CardDescription>Common tasks and shortcuts</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -163,4 +152,4 @@ export default function DashboardPage() {
       </div>
     </div>
   );
-} 
+}

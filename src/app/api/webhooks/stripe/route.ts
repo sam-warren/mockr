@@ -14,8 +14,12 @@ export async function POST(req: NextRequest) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET || ''
     );
-  } catch (error: any) {
-    console.error(`Webhook signature verification failed: ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Webhook signature verification failed: ${error.message}`);
+    } else {
+      console.error(`Webhook signature verification failed: ${String(error)}`);
+    }
     return NextResponse.json(
       { error: 'Webhook signature verification failed' },
       { status: 400 }
@@ -26,8 +30,12 @@ export async function POST(req: NextRequest) {
     // Process the event
     await handleWebhookEvent(event);
     return NextResponse.json({ received: true }, { status: 200 });
-  } catch (error: any) {
-    console.error(`Webhook handler failed: ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Webhook handler failed: ${error.message}`);
+    } else {
+      console.error(`Webhook handler failed: ${String(error)}`);
+    }
     return NextResponse.json(
       { error: 'Webhook handler failed' },
       { status: 500 }
