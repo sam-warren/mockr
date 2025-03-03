@@ -1,9 +1,14 @@
 import Stripe from 'stripe';
 
+// Get the Stripe API key from environment variables
+const stripeApiKey = process.env.STRIPE_SECRET_KEY;
+
 // Initialize Stripe with the secret key from environment variables
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-02-24.acacia', // Use the latest API version
-});
+export const stripe = stripeApiKey 
+  ? new Stripe(stripeApiKey, {
+      apiVersion: '2025-02-24.acacia', // Use the same API version as before
+    })
+  : null as unknown as Stripe; // Type assertion for compatibility
 
 // Define the available price IDs for our subscription plans
 export const PRICE_IDS = {
@@ -89,6 +94,12 @@ export async function createCheckoutSession({
   successUrl: string;
   cancelUrl: string;
 }) {
+  // Check if Stripe is properly initialized
+  if (!stripeApiKey) {
+    console.error('Stripe API key is not configured');
+    throw new Error('Stripe API key is not configured');
+  }
+
   try {
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -119,6 +130,12 @@ export async function createCustomerPortalSession({
   customerId: string;
   returnUrl: string;
 }) {
+  // Check if Stripe is properly initialized
+  if (!stripeApiKey) {
+    console.error('Stripe API key is not configured');
+    throw new Error('Stripe API key is not configured');
+  }
+
   try {
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
@@ -134,6 +151,12 @@ export async function createCustomerPortalSession({
 
 // Helper function to handle webhook events
 export async function handleWebhookEvent(event: Stripe.Event) {
+  // Check if Stripe is properly initialized
+  if (!stripeApiKey) {
+    console.error('Stripe API key is not configured');
+    return { received: true }; // Return success to avoid retries
+  }
+
   const { type, data } = event;
 
   switch (type) {

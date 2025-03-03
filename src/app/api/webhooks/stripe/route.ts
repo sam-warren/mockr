@@ -4,9 +4,26 @@ import { headers } from 'next/headers';
 import Stripe from 'stripe';
 
 export async function POST(req: NextRequest) {
+  // Check if Stripe is properly initialized
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error('Missing STRIPE_SECRET_KEY environment variable');
+    return NextResponse.json(
+      { error: 'Server configuration error' },
+      { status: 500 }
+    );
+  }
+
   const body = await req.text();
-  const headersList = headers();
-  const signature = headersList.get('stripe-signature') as string;
+  const headersList = await headers();
+  const signature = headersList.get('stripe-signature');
+
+  if (!signature) {
+    console.error('Missing stripe-signature header');
+    return NextResponse.json(
+      { error: 'Missing stripe-signature header' },
+      { status: 400 }
+    );
+  }
 
   let event: Stripe.Event;
 
