@@ -1,5 +1,18 @@
 import { Highlight, themes } from "prism-react-renderer";
 
+// Define the supported languages
+type SupportedLanguage = 
+  | "javascript" 
+  | "typescript" 
+  | "jsx" 
+  | "tsx" 
+  | "json" 
+  | "css" 
+  | "html" 
+  | "markdown" 
+  | "bash" 
+  | "python";
+
 // Define a custom theme instead of importing from prism-react-renderer/themes
 const theme = {
   plain: {
@@ -115,7 +128,7 @@ export function CodeBlock({
     <Highlight
       theme={themes.nightOwl}
       code={code.trim()}
-      language={language as any}
+      language={language as SupportedLanguage}
     >
       {({
         className: preClassName,

@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe, handleWebhookEvent } from '@/lib/stripe';
 import { headers } from 'next/headers';
+import Stripe from 'stripe';
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
-  const signature = headers().get('stripe-signature') as string;
+  const headersList = headers();
+  const signature = headersList.get('stripe-signature') as string;
 
-  let event;
+  let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(

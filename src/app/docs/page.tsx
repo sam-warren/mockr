@@ -244,9 +244,9 @@ export default function DocsPage() {
               </ul>
 
               <h2>Quick Example</h2>
-              <p>
-                Here's a simple example of how to use mockr.io to generate user
-                data:
+              <p className="text-lg text-muted-foreground mb-8">
+                Here&apos;s a simple example of how to use mockr.io to generate user
+                profiles with AI-enhanced content.
               </p>
 
               <div className="relative bg-muted rounded-lg overflow-hidden my-6">
@@ -261,10 +261,9 @@ export default function DocsPage() {
               </div>
 
               <h2>Getting Started</h2>
-              <p>
-                To get started with mockr.io, you'll need to create an account
-                and obtain an API key. Once you have your API key, you can
-                install our client library and start generating mock data.
+              <p className="text-lg text-muted-foreground mb-8">
+                To get started with mockr.io, you&apos;ll need to create an account
+                and get your API key from the dashboard.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -304,10 +303,10 @@ export default function DocsPage() {
               </div>
 
               <h2>Need Help?</h2>
-              <p>
-                If you need help with mockr.io, you can reach out to our support
-                team or join our community on Discord. We're always happy to
-                help you get the most out of mockr.io.
+              <p className="text-muted-foreground">
+                If you have any questions, feel free to contact our support
+                team or join our community on Discord. We&apos;re always happy to
+                help!
               </p>
 
               <div className="flex flex-wrap gap-4 mt-6">

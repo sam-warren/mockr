@@ -134,7 +134,7 @@ export default function FeaturesPage() {
                 AI-Powered Features for <span className="text-primary">Intelligent</span> Mock Data
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Discover how mockr.io's advanced AI capabilities can transform your development workflow with realistic, contextual mock data.
+                Discover how mockr.io&apos;s advanced AI capabilities can transform your development workflow with realistic, contextual mock data.
               </p>
             </div>
           </div>

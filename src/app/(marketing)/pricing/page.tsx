@@ -12,7 +12,7 @@ export default function PricingPage() {
             <div className="text-center mb-16">
               <h1 className="text-4xl font-bold tracking-tighter mb-4">Simple, Transparent Pricing</h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Choose the plan that's right for you. All plans include a 14-day free trial.
+                Choose the plan that&apos;s right for you. All plans include a 14-day free trial.
               </p>
             </div>
             
