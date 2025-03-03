@@ -360,48 +360,6 @@ export default function FeaturesPage() {
           </div>
         </section>
       </main>
-      <footer className="border-t py-12">
-        <div className="container px-6 md:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="font-bold mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li><Link href="/features" className="text-muted-foreground hover:text-foreground">Features</Link></li>
-                <li><Link href="/pricing" className="text-muted-foreground hover:text-foreground">Pricing</Link></li>
-                <li><Link href="/docs" className="text-muted-foreground hover:text-foreground">Documentation</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li><Link href="/about" className="text-muted-foreground hover:text-foreground">About</Link></li>
-                <li><Link href="/blog" className="text-muted-foreground hover:text-foreground">Blog</Link></li>
-                <li><Link href="/contact" className="text-muted-foreground hover:text-foreground">Contact</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li><Link href="/terms" className="text-muted-foreground hover:text-foreground">Terms</Link></li>
-                <li><Link href="/privacy" className="text-muted-foreground hover:text-foreground">Privacy</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Connect</h3>
-              <ul className="space-y-2">
-                <li><Link href="https://twitter.com" className="text-muted-foreground hover:text-foreground">Twitter</Link></li>
-                <li><Link href="https://github.com" className="text-muted-foreground hover:text-foreground">GitHub</Link></li>
-                <li><Link href="https://discord.com" className="text-muted-foreground hover:text-foreground">Discord</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t mt-8 pt-8 flex justify-between items-center">
-            <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} mockr.io. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </footer>
     </>
   );
 } 

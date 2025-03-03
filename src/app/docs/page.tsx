@@ -257,26 +257,6 @@ export default function DocsPage() {
           </div>
         </main>
       </div>
-      <footer className="border-t py-8 md:py-12">
-        <div className="container px-6 md:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} mockr.io. All rights reserved.
-            </div>
-            <div className="flex items-center gap-4">
-              <Link href="/terms" className="text-sm text-muted-foreground hover:underline">
-                Terms
-              </Link>
-              <Link href="/privacy" className="text-sm text-muted-foreground hover:underline">
-                Privacy
-              </Link>
-              <Link href="/contact" className="text-sm text-muted-foreground hover:underline">
-                Contact
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
     </>
   );
 } 
