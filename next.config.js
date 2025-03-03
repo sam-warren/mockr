@@ -17,6 +17,23 @@ const nextConfig = {
     STRIPE_PRO_PRICE_ID: process.env.STRIPE_PRO_PRICE_ID,
     STRIPE_ENTERPRISE_PRICE_ID: process.env.STRIPE_ENTERPRISE_PRICE_ID,
   },
+  // Set output to 'standalone' to optimize for serverless deployment
+  output: 'standalone',
+  // Disable static optimization for problematic pages
+  experimental: {
+    // This helps with CSS processing issues
+    optimizeCss: false,
+  },
+  // Configure page generation
+  generateBuildId: async () => {
+    // You can set a custom build ID here if needed
+    return 'mockr-build-' + Date.now();
+  },
+  // Disable static optimization completely
+  staticPageGenerationTimeout: 0,
+  images: {
+    unoptimized: true,
+  },
 };
 
 module.exports = nextConfig; 

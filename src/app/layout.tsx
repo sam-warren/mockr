@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export const metadata: Metadata = {
   title: "mockr.io - AI-Powered Mock Data Generator",
   description: "Generate realistic mock data for your applications with AI. Easy to use, simple and effective.",
