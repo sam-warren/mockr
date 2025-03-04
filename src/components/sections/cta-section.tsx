@@ -10,7 +10,7 @@ export function CtaSection() {
             Ready to transform your testing workflow?
           </h2>
           <p className="mt-4 max-w-[85%] text-muted-foreground sm:text-lg">
-            Join thousands of developers who are already using mockr.io to
+            Join thousands of developers who are already using mockr to
             create realistic test data.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">

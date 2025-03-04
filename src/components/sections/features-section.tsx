@@ -14,7 +14,7 @@ export function FeaturesSection() {
       <Container>
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center text-center">
           <h2 className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-            Why Choose mockr.io?
+            Why Choose mockr?
           </h2>
           <p className="mt-4 max-w-[85%] text-muted-foreground sm:text-lg">
             Our platform offers unique advantages over traditional mock data

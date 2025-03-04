@@ -10,9 +10,9 @@ export default function Home() {
     <>
       <HeroSection />
       <FeaturesSection />
-      <SectionDivider variant="secondary" />
+      <SectionDivider variant="primary" />
       <TestimonialsSection />
-      <SectionDivider variant="tertiary" />
+      <SectionDivider variant="primary" />
       <PricingSection />
       <CtaSection />
     </>

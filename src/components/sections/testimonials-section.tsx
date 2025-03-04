@@ -11,7 +11,7 @@ export function TestimonialsSection() {
             Loved by Developers
           </h2>
           <p className="mt-4 max-w-[85%] text-muted-foreground sm:text-lg">
-            See what developers are saying about mockr.io
+            See what developers are saying about mockr
           </p>
         </div>
         <div className="mx-auto mt-12 grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -28,7 +28,7 @@ export function TestimonialsSection() {
                 ))}
               </div>
               <p className="mt-4 text-muted-foreground">
-                &quot;mockr.io has completely transformed our testing workflow.
+                &quot;mockr has completely transformed our testing workflow.
                 The context-aware data generation is a game-changer for our
                 microservices architecture.&quot;
               </p>
@@ -93,7 +93,7 @@ export function TestimonialsSection() {
               </div>
               <p className="mt-4 text-muted-foreground">
                 &quot;As a healthcare developer, the HIPAA-compliant mock data
-                templates are invaluable. mockr.io understands industry-specific
+                templates are invaluable. mockr understands industry-specific
                 needs.&quot;
               </p>
             </CardContent>

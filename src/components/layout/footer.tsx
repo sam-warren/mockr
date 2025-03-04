@@ -90,7 +90,7 @@ export function Footer() {
           <Separator className="my-8" />
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} mockr.io. All rights reserved.
+              &copy; {new Date().getFullYear()} mockr. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
               <Link

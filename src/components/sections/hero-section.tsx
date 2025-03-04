@@ -48,7 +48,7 @@ export function HeroSection() {
               >
                 NEW
               </Badge>
-              Introducing mockr.io - Now in beta
+              Introducing mockr - Now in beta
             </div>
             <div className="inline-flex items-center rounded-full border border-border/40 bg-background/95 pl-1 pr-3 py-1 text-sm font-medium text-muted-foreground backdrop-blur-sm">
               <Badge
