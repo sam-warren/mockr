@@ -7,7 +7,7 @@ mockr.io addresses the critical gap between static mock data libraries (Faker.js
 
 ## Competitive Differentiation Strategy  
 ### 1. Semantic Relationship Mapping  
-Unlike Faker.js’ random data:  
+Unlike Faker.js' random data:  
 - **AI Context Engine**: Analyzes database schemas/API specs to maintain referential integrity (user.address → valid geolocation)[1]  
 - **Cross-Entity Constraints**: Automatically enforces `order.user_id` ↔ `users.id` relationships during generation  
 
@@ -242,3 +242,46 @@ Citations:
 [90] https://www.reddit.com/r/sales/comments/yqmcl2/handling_the_dreaded_price_objection_like_a_boss/
 [91] https://www.reddit.com/r/Entrepreneur/comments/17dv85d/lets_talk_business_plans_is_there_an_ai_that_can/
 [92] https://www.joinleland.com/library/a/how-to-crack-pricing-strategy-case-studies-in-consulting-interviews
+
+## Authentication
+
+Mockr uses GitHub OAuth for authentication. To set up GitHub OAuth:
+
+1. Go to your GitHub account settings
+2. Navigate to "Developer settings" > "OAuth Apps" > "New OAuth App"
+3. Fill in the following details:
+   - Application name: Mockr (or your preferred name)
+   - Homepage URL: `http://localhost:3000` (for development)
+   - Authorization callback URL: `http://localhost:3000/api/auth/callback/github`
+4. Click "Register application"
+5. Generate a new client secret
+6. Copy the Client ID and Client Secret
+7. Create a `.env.local` file in the root of the project (copy from `.env.local.example`)
+8. Add your GitHub Client ID and Client Secret to the `.env.local` file:
+   ```
+   GITHUB_ID=your_github_client_id
+   GITHUB_SECRET=your_github_client_secret
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=your_nextauth_secret # Generate with: openssl rand -base64 32
+   ```
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Features
+
+- Visual data modeling
+- AI-assisted generation
+- Smart relationships
+- GitHub authentication

@@ -1,9 +1,8 @@
-import Link from "next/link";
-import { Logo } from "@/components/ui/logo";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { UserNav } from "@/components/ui/user-nav";
+import Link from "next/link";
 
 export function Header() {
   return (

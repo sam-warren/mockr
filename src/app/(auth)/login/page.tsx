@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { signIn } from "next-auth/react";
 import { Github } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   return (
