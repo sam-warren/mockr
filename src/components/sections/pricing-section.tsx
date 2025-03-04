@@ -13,7 +13,7 @@ import { Check } from "lucide-react";
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-20 md:py-32">
+    <section id="pricing" className="relative py-12 md:py-16 overflow-hidden">
       <Container>
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center text-center">
           <h2 className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
@@ -24,7 +24,7 @@ export function PricingSection() {
             14-day free trial.
           </p>
         </div>
-        <div className="mx-auto mt-16 grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Free Plan */}
           <Card className="flex flex-col">
             <CardHeader>
