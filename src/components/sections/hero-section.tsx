@@ -58,11 +58,11 @@ export function HeroSection() {
                 <Brain className="h-3 w-3 mr-1" />
                 AI
               </Badge>
-              Powered by advanced AI models
+              Driven by Artificial Intelligence
             </div>
           </div>
           <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-            Context-Aware AI Mock Data Generation
+            Context-Aware Mock Data Generation
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
             Generate realistic test data that understands your

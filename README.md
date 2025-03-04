@@ -1,4 +1,4 @@
-# mockr.io: Context-Aware AI Mock Data Generation Platform  
+# mockr.io: Context-Aware Mock Data Generation Platform  
 
 ## Executive Summary  
 mockr.io addresses the critical gap between static mock data libraries (Faker.js) and production-like datasets by introducing **context-aware AI generation** that understands application-specific relationships. Built on Next.js/Supabase with Stripe monetization, the platform enables developers to create dynamic test data that mirrors real-world scenarios through natural language prompts and schema-aware AI models. With 83% of developers reporting inadequate testing data quality (2024 State of Software Testing Report), mockr.io positions itself as the first SaaS solution combining ease of use with semantic data integrity.  

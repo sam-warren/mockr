@@ -42,7 +42,7 @@ export function PricingSection() {
             <CardContent className="flex flex-col gap-4">
               <div className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-primary" />
-                <p className="text-sm">Up to 3 projects</p>
+                <p className="text-sm">One project</p>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-primary" />
