@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import { Sparkles, Workflow, ArrowRightLeft } from "lucide-react";
 import { CodeBlock } from "@/components/ui/code-block";
-import { useTheme } from "next-themes";
 
 export function FeaturesSection() {
   const mockrExample = `// Generated code from your visual model

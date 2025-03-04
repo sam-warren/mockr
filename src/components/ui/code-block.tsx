@@ -15,8 +15,8 @@ import "prismjs/plugins/line-numbers/prism-line-numbers";
 // Load Prism in server context
 if (typeof window === "undefined") {
   // This is a workaround for using Prism in a server component
-  // @ts-ignore - global assignment for server-side rendering
-  global.Prism = global.Prism || Prism;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (global as any).Prism = (global as any).Prism || Prism;
 }
 
 // Custom styles for Prism
