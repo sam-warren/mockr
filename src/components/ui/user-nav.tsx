@@ -14,26 +14,20 @@ import {
 import { User, Settings, CreditCard, LogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 export function UserNav() {
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const subdomain = searchParams.get('subdomain');
-  
+
   if (!session) {
-    // Create login URL with subdomain parameter if it exists
-    const loginHref = subdomain ? `/login?subdomain=${subdomain}` : "/login";
-    
     return (
       <Button variant="outline" size="sm" asChild>
-        <Link href={loginHref}>Sign In</Link>
+        <Link href="/login">Sign In</Link>
       </Button>
     );
   }
-  
+
   const user = session.user;
-  
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -75,15 +69,15 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => {
-          // Create callback URL with subdomain parameter if it exists
-          const callbackUrl = subdomain ? `/?subdomain=${subdomain}` : "/";
-          signOut({ callbackUrl });
-        }}>
+        <DropdownMenuItem
+          onClick={() => {
+            signOut({ callbackUrl: "/" });
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
-} 
+}
