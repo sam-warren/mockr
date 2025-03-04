@@ -1,11 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function Dashboard() {
   return (
     <div className="container py-10">
       <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
@@ -19,7 +26,7 @@ export default function Dashboard() {
             <Button>Create Mock</Button>
           </CardFooter>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>API Usage</CardTitle>
@@ -32,7 +39,7 @@ export default function Dashboard() {
             <Button variant="outline">View Details</Button>
           </CardFooter>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Account</CardTitle>
@@ -48,4 +55,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-} 
+}

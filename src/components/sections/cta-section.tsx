@@ -14,10 +14,10 @@ export function CtaSection() {
             create realistic test data.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Button size="lg" className="h-12 px-8">
+            <Button size="lg" className="h-12 px-8 cursor-pointer">
               Get Started for Free
             </Button>
-            <Button size="lg" variant="outline" className="h-12 px-8">
+            <Button size="lg" variant="outline" className="h-12 px-8 cursor-pointer">
               Schedule a Demo
             </Button>
           </div>

@@ -3,41 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Brain, Code, ShieldCheck, Zap } from "lucide-react";
 import Link from "next/link";
+import { GridBackground } from "@/components/layout/grid-background";
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden py-20 md:py-32">
-      <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 dark:opacity-50"
-          style={{
-            backgroundImage: `
-              linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-              linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: "57px 57px",
-            maskImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-0 dark:opacity-100"
-          style={{
-            backgroundImage: `
-              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-              linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: "57px 57px",
-            maskImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
-          }}
-        />
+      <GridBackground>
         <div className="absolute inset-x-0 bottom-0 h-32" />
-      </div>
+      </GridBackground>
       <Container className="relative">
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <div className="flex flex-wrap justify-center gap-2 mb-6">
