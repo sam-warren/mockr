@@ -53,7 +53,7 @@ export default function FeaturesPage() {
               Advanced Capabilities
             </h2>
             <p className="mt-4 max-w-[85%] text-muted-foreground sm:text-lg">
-              Explore the full range of mockr's powerful features designed for modern development workflows.
+              Explore the full range of mockr&apos;s powerful features designed for modern development workflows.
             </p>
           </div>
           

@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import { GridBackground } from "@/components/layout/grid-background";
 import { Logo } from "@/components/ui/logo";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function AuthLayout({
   children,

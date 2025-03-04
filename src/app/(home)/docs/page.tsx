@@ -191,7 +191,7 @@ mockr generate --schema ./schema.json --output ./mock-data.json`;
               </CardHeader>
               <CardContent>
                 <CardDescription className="mb-4">
-                  Watch step-by-step video guides on using mockr's features effectively.
+                  Watch step-by-step video guides on using mockr&apos;s features effectively.
                 </CardDescription>
                 <Button asChild variant="outline" size="sm">
                   <Link href="/docs/tutorials">Watch Tutorials</Link>
