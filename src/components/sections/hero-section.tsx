@@ -49,7 +49,7 @@ export function HeroSection() {
             Context-Aware AI Mock Data Generation
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Generate realistic test data that understands your application's
+            Generate realistic test data that understands your application&apos;s
             specific relationships. Say goodbye to random data and hello to
             semantically valid mock datasets.
           </p>

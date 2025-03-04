@@ -32,9 +32,9 @@ export function TestimonialsSection() {
                 ))}
               </div>
               <p className="mt-4 text-muted-foreground">
-                "mockr.io has completely transformed our testing workflow. The
+                &quot;mockr.io has completely transformed our testing workflow. The
                 context-aware data generation is a game-changer for our
-                microservices architecture."
+                microservices architecture.&quot;
               </p>
             </CardContent>
             <CardFooter>
@@ -69,9 +69,9 @@ export function TestimonialsSection() {
                 ))}
               </div>
               <p className="mt-4 text-muted-foreground">
-                "The VS Code extension is brilliant. I can generate realistic
-                test data without leaving my editor. It's saved our team
-                countless hours."
+                &quot;The VS Code extension is brilliant. I can generate realistic
+                test data without leaving my editor. It&apos;s saved our team
+                countless hours.&quot;
               </p>
             </CardContent>
             <CardFooter>
@@ -106,9 +106,9 @@ export function TestimonialsSection() {
                 ))}
               </div>
               <p className="mt-4 text-muted-foreground">
-                "As a healthcare developer, the HIPAA-compliant mock data
+                &quot;As a healthcare developer, the HIPAA-compliant mock data
                 templates are invaluable. mockr.io understands industry-specific
-                needs."
+                needs.&quot;
               </p>
             </CardContent>
             <CardFooter>

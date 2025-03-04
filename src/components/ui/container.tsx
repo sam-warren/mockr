@@ -1,7 +1,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
+// This interface is used to provide type safety while extending HTMLAttributes
+type ContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function Container({ className, ...props }: ContainerProps) {
   return (

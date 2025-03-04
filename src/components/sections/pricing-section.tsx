@@ -20,7 +20,7 @@ export function PricingSection() {
             Simple, Transparent Pricing
           </h2>
           <p className="mt-4 max-w-[85%] text-muted-foreground sm:text-lg">
-            Choose the plan that's right for your team. All plans include a
+            Choose the plan that&apos;s right for your team. All plans include a
             14-day free trial.
           </p>
         </div>
