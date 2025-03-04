@@ -3,6 +3,7 @@ import { Logo } from "@/components/ui/logo";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { UserNav } from "@/components/ui/user-nav";
 
 export function Header() {
   return (
@@ -38,15 +39,7 @@ export function Header() {
 
           {/* Right section - Actions */}
           <div className="flex items-center justify-end gap-4">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Log in
-            </Link>
-            <Button asChild size="sm">
-              <Link href="/signup">Sign up</Link>
-            </Button>
+            <UserNav />
             <ModeToggle />
           </div>
         </div>

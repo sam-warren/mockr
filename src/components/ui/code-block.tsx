@@ -21,6 +21,149 @@ if (typeof window === "undefined") {
 
 // Custom styles for Prism
 const prismStyles = `
+  /* Override Prism theme background */
+  pre[class*="language-"],
+  code[class*="language-"] {
+    background: transparent !important;
+    color: inherit;
+  }
+
+  /* Ensure token colors work with both light and dark themes */
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: hsl(210, 25%, 50%);
+    font-style: italic;
+  }
+
+  .token.punctuation {
+    color: var(--muted-foreground);
+    opacity: 0.8;
+  }
+
+  .token.namespace {
+    opacity: 0.8;
+  }
+
+  .token.property,
+  .token.tag,
+  .token.boolean,
+  .token.number,
+  .token.constant,
+  .token.symbol,
+  .token.deleted {
+    color: hsl(350, 80%, 60%);
+  }
+
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted {
+    color: hsl(130, 60%, 45%);
+  }
+
+  .token.operator,
+  .token.entity,
+  .token.url,
+  .language-css .token.string,
+  .style .token.string {
+    color: hsl(40, 90%, 45%);
+  }
+
+  .token.atrule,
+  .token.attr-value,
+  .token.keyword {
+    color: hsl(210, 80%, 60%);
+  }
+
+  .token.function,
+  .token.class-name {
+    color: hsl(280, 70%, 60%);
+  }
+
+  .token.regex,
+  .token.important,
+  .token.variable {
+    color: hsl(30, 80%, 50%);
+  }
+
+  /* Dark theme adjustments */
+  .dark .token.property,
+  .dark .token.tag,
+  .dark .token.boolean,
+  .dark .token.number,
+  .dark .token.constant,
+  .dark .token.symbol,
+  .dark .token.deleted {
+    color: hsl(350, 90%, 70%);
+  }
+
+  .dark .token.selector,
+  .dark .token.attr-name,
+  .dark .token.string,
+  .dark .token.char,
+  .dark .token.builtin,
+  .dark .token.inserted {
+    color: hsl(130, 70%, 60%);
+  }
+
+  .dark .token.operator,
+  .dark .token.entity,
+  .dark .token.url,
+  .dark .language-css .token.string,
+  .dark .style .token.string {
+    color: hsl(40, 90%, 60%);
+  }
+
+  .dark .token.atrule,
+  .dark .token.attr-value,
+  .dark .token.keyword {
+    color: hsl(210, 90%, 70%);
+  }
+
+  .dark .token.function,
+  .dark .token.class-name {
+    color: hsl(280, 80%, 70%);
+  }
+
+  .dark .token.regex,
+  .dark .token.important,
+  .dark .token.variable {
+    color: hsl(30, 90%, 60%);
+  }
+
+  /* JSON specific styling */
+  .language-json .token.property {
+    color: hsl(210, 80%, 60%);
+  }
+  
+  .dark .language-json .token.property {
+    color: hsl(210, 90%, 70%);
+  }
+  
+  .language-json .token.string {
+    color: hsl(130, 60%, 45%);
+  }
+  
+  .dark .language-json .token.string {
+    color: hsl(130, 70%, 60%);
+  }
+  
+  .language-json .token.number,
+  .language-json .token.boolean,
+  .language-json .token.null {
+    color: hsl(350, 80%, 60%);
+  }
+  
+  .dark .language-json .token.number,
+  .dark .language-json .token.boolean,
+  .dark .language-json .token.null {
+    color: hsl(350, 90%, 70%);
+  }
+
   code[class*="language-"],
   pre[class*="language-"] {
     text-align: left;
@@ -31,6 +174,7 @@ const prismStyles = `
     line-height: 1.5;
     tab-size: 4;
     hyphens: none;
+    background: transparent !important;
   }
   
   .line-number {
@@ -49,6 +193,15 @@ const prismStyles = `
   pre, code {
     white-space: pre !important;
     tab-size: 2;
+    background: transparent !important;
+  }
+
+  .dark .token.comment,
+  .dark .token.prolog,
+  .dark .token.doctype,
+  .dark .token.cdata {
+    color: hsl(210, 30%, 60%);
+    font-style: italic;
   }
 `;
 
@@ -109,7 +262,7 @@ export function CodeBlock({
 
   return (
     <div className={cn(
-      "rounded-lg overflow-hidden border h-full flex flex-col bg-card text-card-foreground shadow", 
+      "rounded-lg overflow-hidden border h-full flex flex-col text-card-foreground shadow", 
       className
     )}>
       {title && (
@@ -124,7 +277,7 @@ export function CodeBlock({
       )}
       <pre
         className={cn(
-          "p-4 text-sm overflow-auto bg-card flex-1",
+          "p-4 text-sm overflow-auto flex-1",
           showLineNumbers && "table w-full"
         )}
         style={{ tabSize: 2 }}
@@ -142,6 +295,7 @@ export function CodeBlock({
         ${prismStyles}
         .line-number {
           line-height: 1.5;
+          opacity: 0.7;
         }
       `}} />
     </div>

@@ -58,7 +58,7 @@ export function PricingSection() {
               </div>
             </CardContent>
             <CardFooter className="mt-auto pt-4">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full cursor-pointer">
                 Get Started
               </Button>
             </CardFooter>
@@ -106,7 +106,9 @@ export function PricingSection() {
               </div>
             </CardContent>
             <CardFooter className="mt-auto pt-4">
-              <Button className="w-full">Start Free Trial</Button>
+              <Button className="w-full cursor-pointer">
+                Start Free Trial
+              </Button>
             </CardFooter>
           </Card>
 
@@ -151,7 +153,7 @@ export function PricingSection() {
               </div>
             </CardContent>
             <CardFooter className="mt-auto pt-4">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full cursor-pointer">
                 Contact Sales
               </Button>
             </CardFooter>

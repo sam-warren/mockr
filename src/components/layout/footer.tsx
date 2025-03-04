@@ -90,25 +90,25 @@ export function Footer() {
           <Separator className="my-8" />
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} mockr. All rights reserved.
+              &copy; {new Date().getFullYear()} JunctionTech Inc. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
               <Link
-                href="https://twitter.com/mockrio"
+                href="https://twitter.com/jnctn_inc"
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Twitter size={16} />
                 <span className="sr-only">Twitter</span>
               </Link>
               <Link
-                href="https://github.com/mockrio"
+                href="https://github.com/sam-warren/mockr"
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Github size={16} />
                 <span className="sr-only">GitHub</span>
               </Link>
               <Link
-                href="https://linkedin.com/company/mockrio"
+                href="https://linkedin.com/company/junctiontech"
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Linkedin size={16} />

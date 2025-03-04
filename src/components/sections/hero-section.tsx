@@ -71,7 +71,7 @@ export function HeroSection() {
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Button asChild size="lg">
-              <Link href="/signup">Get Started Free</Link>
+              <Link href="/login">Get Started Free</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link href="/demo">Live Demo</Link>

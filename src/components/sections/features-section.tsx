@@ -120,12 +120,16 @@ export function FeaturesSection() {
             {/* Visual Editor Interface */}
 
             {/* Generated Data */}
-            <CodeBlock
-              title="Generated Mock Data"
-              language="json"
-              code={mockrExample}
-              className="w-full"
-            />
+            <Card className="w-full">
+              <CardContent className="p-0">
+                <CodeBlock
+                  title="Generated Mock Data"
+                  language="json"
+                  code={mockrExample}
+                  className="w-full border-0 shadow-none"
+                />
+              </CardContent>
+            </Card>
           </div>
         </div>
       </Container>

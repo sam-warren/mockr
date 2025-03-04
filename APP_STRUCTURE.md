@@ -16,8 +16,6 @@ When they hit the "Get Started" button, they are redirected to the app.mockr.io/
 
 When they hit the "Login" button, they are redirected to the app.mockr.io/login page.
 
-When they hit "Sign Up", they are redirected to the app.mockr.io/signup page.
-
 When they click on one of the pricing plans, they are redirected to the app.mockr.io/pricing page.
 
 app.mockr.io and www.mockr.io are connected to the same database. They are deployed as a single Next.js app.

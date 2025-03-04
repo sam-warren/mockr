@@ -17,7 +17,7 @@ export default function AuthLayout({
       <main className="flex-1">{children}</main>
       <footer className="border-t py-4 text-center text-sm text-muted-foreground">
         <div className="container">
-          © {new Date().getFullYear()} Mockr. All rights reserved.
+          © {new Date().getFullYear()} JunctionTech Inc. All rights reserved.
         </div>
       </footer>
     </div>
