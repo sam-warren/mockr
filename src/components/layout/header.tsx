@@ -34,12 +34,6 @@ export function Header() {
             >
               Documentation
             </Link>
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Blog
-            </Link>
           </nav>
 
           {/* Right section - Actions */}
@@ -53,7 +47,7 @@ export function Header() {
             <Button asChild size="sm">
               <Link href="/signup">Sign up</Link>
             </Button>
-            <ModeToggle/>
+            <ModeToggle />
           </div>
         </div>
       </Container>

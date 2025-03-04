@@ -1,0 +1,9 @@
+- [ ] Add auth
+- [ ] Set up supabase
+- [ ] Add pages:
+    - [ ] Features
+    - [ ] Pricing
+    - [ ] Documentation
+- [ ] Register subdomain for app
+- [ ] Add code previews to hero page
+- [ ] Organize hero page to be more visually appealing
