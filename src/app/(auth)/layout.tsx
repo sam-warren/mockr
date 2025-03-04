@@ -12,12 +12,6 @@ export default function AuthLayout({
       {/* Add the grid background */}
       <GridBackground />
       
-      {/* Header with logo and mode toggle */}
-      <header className="relative z-10 flex items-center justify-between p-6">
-        <Logo />
-        <ModeToggle />
-      </header>
-      
       {/* Main content */}
       <main className="relative z-10 flex-1 flex items-center justify-center">
         {children}
