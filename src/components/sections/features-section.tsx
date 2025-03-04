@@ -9,7 +9,7 @@ import {
 
 export function FeaturesSection() {
   return (
-    <section className="py-20 md:py-32 bg-accent/5">
+    <section className="py-20 md:py-32">
       <Container>
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center text-center">
           <h2 className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">

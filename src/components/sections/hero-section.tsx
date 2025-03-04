@@ -6,8 +6,37 @@ import { Badge } from "@/components/ui/badge";
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden py-20 md:py-32">
-      <div className="absolute inset-0 bg-grid-small-black/[0.2] bg-[size:20px_20px] dark:bg-grid-small-white/[0.2]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/70 to-background" />
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 dark:opacity-50"
+          style={{
+            backgroundImage: `
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+              linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+            maskImage:
+              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-0 dark:opacity-100"
+          style={{
+            backgroundImage: `
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+            maskImage:
+              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%)",
+          }}
+        />
+        <div className="absolute inset-x-0 bottom-0 h-32" />
+      </div>
       <Container className="relative">
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <div className="inline-flex items-center rounded-full border border-border/40 bg-background/95 pl-1 pr-3 py-1 text-sm font-medium text-muted-foreground backdrop-blur-sm">
