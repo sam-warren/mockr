@@ -31,10 +31,8 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
     
-    // Rewrite to auth route group
-    const url = request.nextUrl.clone();
-    url.pathname = `/(auth)${pathname}`;
-    return NextResponse.rewrite(url);
+    // No rewrite needed for login route as it's already in the correct route group
+    return NextResponse.next();
   }
   
   // If trying to access protected routes without authentication
@@ -43,12 +41,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
   
-  // Handle route groups based on the path
+  // Protected routes don't need rewrites as route groups are just for organization
   if (isProtectedRoute) {
-    // Rewrite to app route group
-    const url = request.nextUrl.clone();
-    url.pathname = `/(app)${pathname}`;
-    return NextResponse.rewrite(url);
+    return NextResponse.next();
   }
   
   // Handle marketing routes
@@ -58,9 +53,8 @@ export async function middleware(request: NextRequest) {
   );
   
   if (isMarketingRoute) {
-    const url = request.nextUrl.clone();
-    url.pathname = `/(home)${pathname}`;
-    return NextResponse.rewrite(url);
+    // No rewrite needed for marketing routes
+    return NextResponse.next();
   }
   
   // The root route (/) should use the root page.tsx

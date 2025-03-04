@@ -1,13 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Github } from "lucide-react";
 import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted/40">
+    <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
@@ -17,8 +24,8 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <Button 
-              className="w-full flex items-center justify-center gap-2" 
+            <Button
+              className="w-full flex items-center justify-center gap-2 cursor-pointer"
               onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
             >
               <Github className="h-5 w-5" />
@@ -34,4 +41,4 @@ export default function LoginPage() {
       </Card>
     </div>
   );
-} 
+}
