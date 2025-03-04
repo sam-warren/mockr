@@ -1,12 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import {
-  Code,
-  ShieldCheck,
-  Sparkles,
-  Zap
-} from "lucide-react";
+import { Brain, Code, ShieldCheck, Zap } from "lucide-react";
 import Link from "next/link";
 
 export function HeroSection() {
@@ -60,7 +55,7 @@ export function HeroSection() {
                 variant="secondary"
                 className="mr-2 px-1.5 py-0.5 text-[10px]"
               >
-                <Sparkles className="h-3 w-3 mr-0.5" />
+                <Brain className="h-3 w-3 mr-1" />
                 AI
               </Badge>
               Powered by advanced AI models
