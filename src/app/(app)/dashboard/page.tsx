@@ -13,7 +13,7 @@ export default function Dashboard() {
             <CardDescription>Your recently created mock APIs</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>You haven't created any mocks yet.</p>
+            <p>You haven&apos;t created any mocks yet.</p>
           </CardContent>
           <CardFooter>
             <Button>Create Mock</Button>
