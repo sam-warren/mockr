@@ -16,6 +16,25 @@ const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 const isDevelopment = process.env.NODE_ENV === "development";
 const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "mockr.io";
 
+// Calculate the base URL for auth callbacks based on environment
+const baseAuthUrl = isDevelopment 
+  ? "http://app.localhost:3000" 
+  : `https://app.${rootDomain}`;
+
+// Set NEXTAUTH_URL dynamically based on environment if not already set
+if (!process.env.NEXTAUTH_URL) {
+  process.env.NEXTAUTH_URL = baseAuthUrl;
+  console.log(`[auth] Setting NEXTAUTH_URL to ${baseAuthUrl}`);
+}
+
+// Additional validation to ensure NEXTAUTH_URL isn't pointing to localhost in production
+if (!isDevelopment && process.env.NEXTAUTH_URL?.includes('localhost')) {
+  console.warn(`[auth][warning] NEXTAUTH_URL contains "localhost" in production environment: ${process.env.NEXTAUTH_URL}`);
+  // Override with the correct URL
+  process.env.NEXTAUTH_URL = baseAuthUrl;
+  console.log(`[auth] Corrected NEXTAUTH_URL to ${baseAuthUrl}`);
+}
+
 // Extend the User type to include GitHub username
 interface GithubUser extends User {
   gh_username?: string;
@@ -128,6 +147,22 @@ export const authConfig = {
       // Default destination is the dashboard
       const dashboardUrl = `${appUrl}/dashboard`;
 
+      // If the URL contains "localhost" in production, replace it with the proper domain
+      if (!isDevelopment && url.includes("localhost")) {
+        // Handle localhost URLs in production by replacing with proper domain
+        console.log("NextAuth redirect: Found localhost URL in production, fixing:", url);
+        const fixedUrl = url.replace(/http:\/\/(?:app\.)?localhost:3000/g, appUrl);
+        
+        // Special handling for GitHub callback URLs
+        if (fixedUrl.includes("/api/auth/callback/github")) {
+          console.log("NextAuth redirect: Fixed GitHub callback URL:", fixedUrl);
+          // For GitHub callbacks, always redirect to dashboard after successful auth
+          return dashboardUrl;
+        }
+        
+        return fixedUrl.includes("/api/auth") ? dashboardUrl : fixedUrl;
+      }
+
       // Auth callback or unknown URL - always go to dashboard
       if (url.includes("/api/auth/callback") || (!url.startsWith("/") && !url.startsWith(appUrl))) {
         console.log("NextAuth redirect: Auth callback or unknown URL, redirecting to:", dashboardUrl);
@@ -189,7 +224,7 @@ export const authConfig = {
 
 // Create a custom logger for NextAuth errors
 if (isDevelopment) {
-  console.log("[auth][debug] NextAuth initialized with config:", { 
+  console.log("[auth][debug] NextAuth initialized with config:", {
     providers: authConfig.providers.map(p => p.id),
     pages: authConfig.pages,
     debug: authConfig.debug,
