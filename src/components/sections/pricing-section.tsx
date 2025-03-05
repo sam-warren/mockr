@@ -24,7 +24,7 @@ export function PricingSection() {
             14-day free trial.
           </p>
         </div>
-        <div className="mx-auto mt-12 grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-5xl gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {/* Free Plan */}
           <Card className="flex flex-col">
             <CardHeader>
@@ -65,7 +65,7 @@ export function PricingSection() {
           </Card>
 
           {/* Pro Plan */}
-          <Card className="flex flex-col relative">
+          <Card className="flex flex-col relative border-primary shadow-[0_0_15px_2px_rgba(var(--primary)_/_0.3)] dark:shadow-[0_0_20px_5px_rgba(var(--primary)_/_0.2)]">
             <div className="absolute -top-4 left-0 right-0 flex justify-center">
               <Badge className="bg-primary text-primary-foreground">
                 Most Popular
@@ -159,6 +159,9 @@ export function PricingSection() {
             </CardFooter>
           </Card>
         </div>
+        <p className="mt-8 text-sm text-muted-foreground text-center font-mono">
+          Prices shown in Canadian Dollars.
+        </p>
       </Container>
     </section>
   );

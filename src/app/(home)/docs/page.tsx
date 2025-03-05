@@ -109,7 +109,7 @@ mockr generate --schema ./schema.json --output ./mock-data.json`;
                   title="Quick Start Example"
                   language="bash"
                   code={quickStartCode}
-                  className="w-full border-0 shadow-none"
+                  className="w-full border-0 shadow-none overflow-x-auto"
                 />
               </CardContent>
             </Card>

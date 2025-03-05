@@ -57,7 +57,7 @@ export default function FeaturesPage() {
             </p>
           </div>
           
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader className="pb-2">
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">

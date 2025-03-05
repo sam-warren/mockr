@@ -9,9 +9,9 @@ export default function AuthLayout({
     <div className="relative flex min-h-screen flex-col">
       {/* Add the grid background */}
       <GridBackground />
-      
+
       {/* Main content */}
-      <main className="relative z-10 flex-1 flex items-center justify-center">
+      <main className="relative z-10 flex-1 flex items-start justify-center pt-[15vh]">
         {children}
       </main>
     </div>

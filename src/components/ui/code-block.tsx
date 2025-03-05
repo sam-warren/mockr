@@ -266,7 +266,7 @@ export function CodeBlock({
       className
     )}>
       {title && (
-        <div className="bg-muted px-4 py-3 border-b flex items-center">
+        <div className="bg-muted px-4 py-3 border-b flex items-center sticky top-0 min-w-max w-full z-10">
           <div className="flex space-x-2 mr-2">
             <div className="w-3 h-3 rounded-full bg-red-500" />
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
@@ -275,22 +275,24 @@ export function CodeBlock({
           <div className="text-sm font-medium">{title}</div>
         </div>
       )}
-      <pre
-        className={cn(
-          "p-4 text-sm overflow-auto flex-1",
-          showLineNumbers && "table w-full"
-        )}
-        style={{ tabSize: 2 }}
-      >
-        {lineNumbers}
-        <div className={showLineNumbers ? "table-cell pl-4" : ""}>
-          <code 
-            className={`language-${language} block whitespace-pre`}
-            dangerouslySetInnerHTML={{ __html: highlightedCode }}
-            style={{ tabSize: 2 }}
-          />
-        </div>
-      </pre>
+      <div className="overflow-auto flex-grow">
+        <pre
+          className={cn(
+            "p-4 text-sm flex-1 h-full",
+            showLineNumbers && "table w-full"
+          )}
+          style={{ tabSize: 2 }}
+        >
+          {lineNumbers}
+          <div className={showLineNumbers ? "table-cell pl-4" : ""}>
+            <code 
+              className={`language-${language} block whitespace-pre`}
+              dangerouslySetInnerHTML={{ __html: highlightedCode }}
+              style={{ tabSize: 2 }}
+            />
+          </div>
+        </pre>
+      </div>
       <style dangerouslySetInnerHTML={{ __html: `
         ${prismStyles}
         .line-number {
