@@ -25,6 +25,12 @@ function LoginForm() {
       setIsLoading(true);
       console.log("Starting GitHub sign-in");
 
+      // First make sure CSRF token is loaded
+      const csrfResponse = await fetch('/api/auth/csrf');
+      if (!csrfResponse.ok) {
+        console.error("Failed to fetch CSRF token");
+      }
+      
       // Use a simple relative URL for the dashboard
       await signIn("github", {
         callbackUrl: "/dashboard",
@@ -40,7 +46,9 @@ function LoginForm() {
     <Card className="w-full backdrop-blur-sm bg-background/80 border-border/40">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Login</CardTitle>
-        <CardDescription>Sign in to your account using GitHub</CardDescription>
+        <CardDescription>
+          Sign in to your account using GitHub
+        </CardDescription>
         {error && (
           <div className="p-3 bg-red-100 border border-red-300 rounded-md text-red-800 text-sm">
             {error === "Configuration"
@@ -48,7 +56,7 @@ function LoginForm() {
               : error === "AccessDenied"
               ? "You don't have permission to access this resource."
               : error === "MissingCSRF"
-              ? "CSRF token is missing. Please try again."
+              ? "Security token was missing. Please try clearing your cookies and refreshing the page."
               : `Authentication error: ${error}`}
           </div>
         )}

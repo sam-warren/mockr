@@ -27,6 +27,12 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Explicitly skip CSRF token verification routes to prevent auth failures
+  if (url.pathname === '/api/auth/csrf') {
+    console.log("Middleware: Skipping CSRF token route");
+    return NextResponse.next();
+  }
+
   // Get hostname of request (e.g. app.mockr.io, app.localhost:3000)
   let hostname = req.headers.get("host")!;
   console.log("Middleware: Processing request for hostname:", hostname, "path:", url.pathname);
@@ -54,15 +60,21 @@ export default async function middleware(req: NextRequest) {
   if (isAppSubdomain) {
     console.log("Middleware: Handling app subdomain");
 
-    // Skip auth check for login page
+    // Skip auth check for callback URLs and login page
     if (url.pathname === "/login") {
       console.log("Middleware: Login page, allowing access");
       return NextResponse.rewrite(new URL("/app/login", req.url));
     }
 
+    // Error page should also be accessible without authentication
+    if (url.pathname === "/login" && url.searchParams.has("error")) {
+      console.log("Middleware: Login error page, allowing access");
+      return NextResponse.rewrite(new URL("/app/login", req.url));
+    }
+
     // For all other app routes, check session
     try {
-      const session = await getToken({ 
+      const session = await getToken({
         req,
         // Make sure to use the same secret as in the auth config
         secret: process.env.NEXTAUTH_SECRET,
@@ -70,13 +82,17 @@ export default async function middleware(req: NextRequest) {
         cookieName: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
         secureCookie: VERCEL_DEPLOYMENT,
       });
-      
+
       console.log("Middleware: Session check result:", !!session);
-      
+
       // If no session and not on login page, redirect to login
       if (!session) {
         console.log("Middleware: No session, redirecting to login");
-        return NextResponse.redirect(new URL("/login", req.url));
+        // Use an absolute URL to prevent localhost:3000 issues
+        const loginUrl = new URL("/login", req.url);
+        // Make sure to preserve the original URL as callbackUrl
+        loginUrl.searchParams.set("callbackUrl", url.pathname);
+        return NextResponse.redirect(loginUrl);
       }
 
       // Session exists, handle routes

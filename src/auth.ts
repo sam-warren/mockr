@@ -79,10 +79,10 @@ export const authConfig = {
         path: "/",
         // When in development, set the domain to the root localhost domain
         // to allow cookie sharing between subdomains
-        domain: isDevelopment 
-          ? ".localhost" 
-          : VERCEL_DEPLOYMENT 
-            ? `.${rootDomain}` 
+        domain: isDevelopment
+          ? ".localhost"
+          : VERCEL_DEPLOYMENT
+            ? `.${rootDomain}`
             : undefined,
         secure: VERCEL_DEPLOYMENT,
       },
@@ -93,10 +93,10 @@ export const authConfig = {
       options: {
         sameSite: "lax",
         path: "/",
-        domain: isDevelopment 
-          ? ".localhost" 
-          : VERCEL_DEPLOYMENT 
-            ? `.${rootDomain}` 
+        domain: isDevelopment
+          ? ".localhost"
+          : VERCEL_DEPLOYMENT
+            ? `.${rootDomain}`
             : undefined,
         secure: VERCEL_DEPLOYMENT,
       },
@@ -107,15 +107,15 @@ export const authConfig = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        domain: isDevelopment 
-          ? ".localhost" 
-          : VERCEL_DEPLOYMENT 
-            ? `.${rootDomain}` 
-            : undefined,
+        domain: isDevelopment
+          ? ".localhost"
+          : undefined, // For CSRF tokens in production, DO NOT set a domain to enhance security
         secure: VERCEL_DEPLOYMENT,
       },
     },
   },
+  // Add explicit CSRF protection configuration
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async redirect({ url }) {
       // Get the app URL for the current environment
@@ -168,7 +168,34 @@ export const authConfig = {
     },
   },
   debug: isDevelopment,
+  events: {
+    async signIn(message) {
+      if (isDevelopment) {
+        console.log("[auth][debug] signIn event", { message });
+      }
+    },
+    async signOut(message) {
+      if (isDevelopment) {
+        console.log("[auth][debug] signOut event", { message });
+      }
+    },
+    async createUser(message) {
+      if (isDevelopment) {
+        console.log("[auth][debug] createUser event", { message });
+      }
+    },
+  }
 } satisfies NextAuthConfig;
+
+// Create a custom logger for NextAuth errors
+if (isDevelopment) {
+  console.log("[auth][debug] NextAuth initialized with config:", { 
+    providers: authConfig.providers.map(p => p.id),
+    pages: authConfig.pages,
+    debug: authConfig.debug,
+    cookies: Object.keys(authConfig.cookies || {})
+  });
+}
 
 export const { auth, handlers } = NextAuth(authConfig);
 
