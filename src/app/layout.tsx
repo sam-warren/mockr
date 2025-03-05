@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
+import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import { Providers } from "@/app/providers";
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { SessionProvider } from "@/components/auth/session-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,18 +44,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            {children}
-            <Footer />
-          </ThemeProvider>
-        </SessionProvider>
+        <Providers>
+          {children}
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );

@@ -15,13 +15,25 @@ import { User, Settings, CreditCard, LogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
+// Get the root domain from environment or use a default
+const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'mockr.io';
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+// Helper to get the app domain based on environment
+const getAppUrl = (path: string = '') => {
+  if (isDevelopment) {
+    return `http://app.localhost:3000${path.startsWith('/') ? path : `/${path}`}`;
+  }
+  return `https://app.${ROOT_DOMAIN}${path.startsWith('/') ? path : `/${path}`}`;
+};
+
 export function UserNav() {
   const { data: session } = useSession();
 
   if (!session) {
     return (
       <Button variant="outline" size="sm" asChild>
-        <Link href="/login">Sign In</Link>
+        <Link href={getAppUrl('login')}>Sign In</Link>
       </Button>
     );
   }
@@ -50,19 +62,19 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/settings/profile">
+            <Link href={getAppUrl('settings/profile')}>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/settings/billing">
+            <Link href={getAppUrl('settings/billing')}>
               <CreditCard className="mr-2 h-4 w-4" />
               <span>Billing</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/settings">
+            <Link href={getAppUrl('settings')}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </Link>

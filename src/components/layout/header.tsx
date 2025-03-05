@@ -27,6 +27,18 @@ import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
+// Get the root domain from environment or use a default
+const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'mockr.io';
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+// Helper to get the app domain based on environment
+const getAppUrl = (path: string = '') => {
+  if (isDevelopment) {
+    return `http://app.localhost:3000${path.startsWith('/') ? path : `/${path}`}`;
+  }
+  return `https://app.${ROOT_DOMAIN}${path.startsWith('/') ? path : `/${path}`}`;
+};
+
 export function Header() {
   const { theme, setTheme } = useTheme();
   const { data: session } = useSession();
@@ -167,7 +179,7 @@ export function Header() {
                         size="lg"
                         className="justify-start"
                       >
-                        <Link href="/login">
+                        <Link href={getAppUrl('login')}>
                           <LogIn className="mr-2 h-4 w-4" />
                           Sign In
                         </Link>

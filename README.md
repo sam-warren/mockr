@@ -259,8 +259,8 @@ Mockr uses GitHub OAuth for authentication. To set up GitHub OAuth:
 7. Create a `.env.local` file in the root of the project (copy from `.env.local.example`)
 8. Add your GitHub Client ID and Client Secret to the `.env.local` file:
    ```
-   GITHUB_ID=your_github_client_id
-   GITHUB_SECRET=your_github_client_secret
+   AUTH_GITHUB_ID=your_github_client_id
+   AUTH_GITHUB_SECRET=your_github_client_secret
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your_nextauth_secret # Generate with: openssl rand -base64 32
    ```
