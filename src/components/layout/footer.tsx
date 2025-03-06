@@ -13,15 +13,15 @@ export function Footer() {
             <div className="col-span-2 lg:col-span-2">
               <Logo />
               <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-                Context-aware AI mock data generation platform for developers
+                Context-aware <span className="text-primary font-medium">AI mock data generation</span> platform for developers
                 who need realistic test data.
               </p>
             </div>
             <div className="flex flex-col gap-2">
-              <h3 className="text-sm font-medium">Product</h3>
+              <h3 className="text-sm font-medium text-primary">Product</h3>
               <Link
                 href="/features"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-muted-foreground hover:text-foreground hover:text-primary"
               >
                 Features
               </Link>
@@ -45,10 +45,10 @@ export function Footer() {
               </Link>
             </div>
             <div className="flex flex-col gap-2">
-              <h3 className="text-sm font-medium">Company</h3>
+              <h3 className="text-sm font-medium text-primary">Company</h3>
               <Link
                 href="/about"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-muted-foreground hover:text-foreground hover:text-primary"
               >
                 About
               </Link>
@@ -60,10 +60,10 @@ export function Footer() {
               </Link>
             </div>
             <div className="flex flex-col gap-2">
-              <h3 className="text-sm font-medium">Legal</h3>
+              <h3 className="text-sm font-medium text-primary">Legal</h3>
               <Link
                 href="/privacy"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-muted-foreground hover:text-foreground hover:text-primary"
               >
                 Privacy
               </Link>
@@ -95,21 +95,21 @@ export function Footer() {
             <div className="flex items-center gap-4">
               <Link
                 href="https://twitter.com/jnctn_inc"
-                className="text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground hover:text-primary"
               >
                 <Twitter size={16} />
                 <span className="sr-only">Twitter</span>
               </Link>
               <Link
                 href="https://github.com/sam-warren/mockr"
-                className="text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground hover:text-primary"
               >
                 <Github size={16} />
                 <span className="sr-only">GitHub</span>
               </Link>
               <Link
                 href="https://linkedin.com/company/junctiontech"
-                className="text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground hover:text-primary"
               >
                 <Linkedin size={16} />
                 <span className="sr-only">LinkedIn</span>

@@ -3,15 +3,18 @@
 import * as React from "react";
 import {
   BookOpen,
-  Bot,
-  Command,
-  Frame,
+  Database,
   LifeBuoy,
-  Map,
   PieChart,
   Send,
   Settings2,
-  SquareTerminal,
+  FileJson,
+  TableProperties,
+  LayoutTemplate,
+  History,
+  Download,
+  GitBranch,
+  Code,
 } from "lucide-react";
 
 import { NavMain } from "@/components/layout/sidebar/nav-main";
@@ -27,127 +30,171 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: PieChart,
       isActive: true,
+    },
+    {
+      title: "Schema Builder",
+      url: "/schema-builder",
+      icon: TableProperties,
       items: [
+        {
+          title: "My Schemas",
+          url: "/schemas",
+        },
+        {
+          title: "Create New",
+          url: "/schemas/new",
+        },
+        {
+          title: "Templates",
+          url: "/schemas/templates",
+        },
+      ],
+    },
+    {
+      title: "Data Generation",
+      url: "/data-generation",
+      icon: Database,
+      items: [
+        {
+          title: "Generate",
+          url: "/generate",
+        },
         {
           title: "History",
-          url: "#",
+          url: "/history",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
+          title: "Scheduled Jobs",
+          url: "/scheduled",
         },
       ],
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
+      title: "Integrations",
+      url: "/integrations",
+      icon: GitBranch,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Supabase",
+          url: "/integrations/supabase",
         },
         {
-          title: "Explorer",
-          url: "#",
+          title: "PostgreSQL",
+          url: "/integrations/postgres",
         },
         {
-          title: "Quantum",
-          url: "#",
+          title: "MongoDB",
+          url: "/integrations/mongodb",
+        },
+        {
+          title: "REST API",
+          url: "/integrations/rest-api",
         },
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
+      title: "API Endpoints",
+      url: "/api",
+      icon: Code,
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "Your Endpoints",
+          url: "/api/endpoints",
         },
         {
-          title: "Get Started",
-          url: "#",
+          title: "Documentation",
+          url: "/api/docs",
         },
         {
-          title: "Tutorials",
-          url: "#",
+          title: "Usage Stats",
+          url: "/api/usage",
+        },
+      ],
+    },
+    {
+      title: "Export Options",
+      url: "/export",
+      icon: Download,
+      items: [
+        {
+          title: "JSON",
+          url: "/export/json",
         },
         {
-          title: "Changelog",
-          url: "#",
+          title: "CSV",
+          url: "/export/csv",
+        },
+        {
+          title: "SQL",
+          url: "/export/sql",
         },
       ],
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Account",
+          url: "/settings/account",
         },
         {
           title: "Team",
-          url: "#",
+          url: "/settings/team",
         },
         {
           title: "Billing",
-          url: "#",
+          url: "/settings/billing",
         },
         {
-          title: "Limits",
-          url: "#",
+          title: "API Keys",
+          url: "/settings/api-keys",
         },
       ],
     },
   ],
   navSecondary: [
     {
+      title: "Documentation",
+      url: "/docs",
+      icon: BookOpen,
+    },
+    {
       title: "Support",
-      url: "#",
+      url: "/support",
       icon: LifeBuoy,
     },
     {
       title: "Feedback",
-      url: "#",
+      url: "/feedback",
       icon: Send,
     },
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
+      name: "Recent Schemas",
+      url: "/schemas/recent",
+      icon: FileJson,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
+      name: "Template Library",
+      url: "/templates",
+      icon: LayoutTemplate,
     },
     {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      name: "Generation History",
+      url: "/history",
+      icon: History,
     },
   ],
 };
@@ -159,15 +206,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
+              <Link href="/dashboard">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                  <Database className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-semibold font-mono">
+                    {"{mockr}"}
+                  </span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    Data Generator
+                  </span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -178,7 +229,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

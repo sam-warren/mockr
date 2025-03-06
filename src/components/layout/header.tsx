@@ -13,31 +13,19 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { UserNav } from "@/components/ui/user-nav";
+import { getAppUrl } from "@/utils/navigation";
 import {
   CreditCard,
-  ExternalLink,
   FileText,
   LogIn,
   Menu,
   Moon,
   Sparkles,
-  Sun
+  Sun,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-
-// Get the root domain from environment or use a default
-const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'mockr.io';
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-// Helper to get the app domain based on environment
-const getAppUrl = (path: string = '') => {
-  if (isDevelopment) {
-    return `http://app.localhost:3000${path.startsWith('/') ? path : `/${path}`}`;
-  }
-  return `https://app.${ROOT_DOMAIN}${path.startsWith('/') ? path : `/${path}`}`;
-};
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -56,19 +44,19 @@ export function Header() {
           <nav className="hidden md:flex items-center justify-center gap-6">
             <Link
               href="/features"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:text-primary"
             >
               Features
             </Link>
             <Link
               href="/pricing"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:text-primary"
             >
               Pricing
             </Link>
             <Link
               href="/docs"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:text-primary"
             >
               Documentation
             </Link>
@@ -99,7 +87,9 @@ export function Header() {
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                     <UserNav />
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">Smart mock data for modern apps</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Smart mock data for modern apps
+                  </p>
                 </SheetHeader>
 
                 {/* Spacer to push navigation to bottom */}
@@ -158,28 +148,16 @@ export function Header() {
                       </>
                     )}
                   </Button>
-                  <SheetClose asChild>
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="lg"
-                      className="justify-start"
-                    >
-                      <Link href="/demo">
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                        Try Demo
-                      </Link>
-                    </Button>
-                  </SheetClose>
+
                   {!session && (
                     <SheetClose asChild>
                       <Button
                         asChild
                         variant="default"
                         size="lg"
-                        className="justify-start"
+                        className="justify-start bg-primary text-primary-foreground hover:bg-primary/90"
                       >
-                        <Link href={getAppUrl('login')}>
+                        <Link href={getAppUrl("login")}>
                           <LogIn className="mr-2 h-4 w-4" />
                           Sign In
                         </Link>

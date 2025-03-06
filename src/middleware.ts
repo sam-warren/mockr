@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import {
+  isDevelopment,
+  isVercelDeployment,
+  rootDomain,
+} from "@/lib/env-config";
+import { logger } from "@/lib/logger";
+
+// Create a module-specific logger
+const log = logger.forModule("middleware");
 
 export const config = {
   matcher: [
@@ -14,42 +23,151 @@ export const config = {
   ],
 };
 
-export default async function middleware(req: NextRequest) {
-  const url = req.nextUrl;
-  const isDevelopment = process.env.NODE_ENV === "development";
-  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "mockr.io";
-  // Check if we're in a Vercel deployment environment
-  const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
-
+/**
+ * Skip middleware for auth-related endpoints
+ */
+function skipForAuthEndpoints(url: URL): NextResponse | null {
   // Skip middleware for auth callback routes to prevent interference with authentication
   if (url.pathname.startsWith('/api/auth')) {
-    console.log("Middleware: Skipping auth route:", url.pathname);
+    log.debug(`Skipping auth route: ${url.pathname}`);
     return NextResponse.next();
   }
 
   // Explicitly skip CSRF token verification routes to prevent auth failures
   if (url.pathname === '/api/auth/csrf') {
-    console.log("Middleware: Skipping CSRF token route");
+    log.debug(`Skipping CSRF token route`);
     return NextResponse.next();
   }
 
-  // Get hostname of request (e.g. app.mockr.io, app.localhost:3000)
-  let hostname = req.headers.get("host")!;
-  console.log("Middleware: Processing request for hostname:", hostname, "path:", url.pathname);
+  return null;
+}
 
+/**
+ * Handle Vercel preview deployments by transforming the hostname
+ */
+function transformPreviewHostname(hostname: string): string {
   // Special case for Vercel preview deployment URLs
   if (
     hostname.includes("---") &&
     hostname.endsWith(`.${process.env.NEXT_PUBLIC_VERCEL_DEPLOYMENT_SUFFIX}`)
   ) {
-    hostname = `${hostname.split("---")[0]}.${rootDomain}`;
-    console.log("Middleware: Transformed preview URL to:", hostname);
+    const transformedHostname = `${hostname.split("---")[0]}.${rootDomain}`;
+    log.debug(`Transformed preview URL: ${hostname} -> ${transformedHostname}`);
+    return transformedHostname;
+  }
+  return hostname;
+}
+
+/**
+ * Handle authenticated app subdomain requests
+ */
+async function handleAppSubdomain(
+  req: NextRequest,
+  url: URL,
+  path: string
+): Promise<NextResponse> {
+  log.debug(`Handling app subdomain`);
+
+  // Login page is accessible without authentication
+  if (url.pathname === "/login") {
+    log.debug(`Login page, allowing access`);
+    return NextResponse.rewrite(new URL("/app/login", req.url));
   }
 
+  // Error page should also be accessible without authentication
+  if (url.pathname === "/login" && url.searchParams.has("error")) {
+    log.debug(`Login error page, allowing access`);
+    return NextResponse.rewrite(new URL("/app/login", req.url));
+  }
+
+  // For all other app routes, check session
+  try {
+    const session = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: `${isVercelDeployment ? "__Secure-" : ""}next-auth.session-token`,
+      secureCookie: isVercelDeployment,
+    });
+
+    log.debug(`Session check result: ${!!session}`);
+
+    // If no session and not on login page, redirect to login
+    if (!session) {
+      log.debug(`No session, redirecting to login`);
+      const redirectUrl = new URL("/login", req.url);
+      redirectUrl.searchParams.set("callbackUrl", url.pathname);
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    // Session exists, handle routes based on path
+    return handleAuthenticatedRoutes(req, path);
+  } catch (error) {
+    log.error(`Error checking session`, { error });
+    // On error, redirect to login for safety
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+}
+
+/**
+ * Handle routes after successful authentication
+ */
+function handleAuthenticatedRoutes(
+  req: NextRequest,
+  path: string
+): NextResponse {
+  // Root path with session redirects to dashboard
+  if (path === "/") {
+    log.debug(`Root path with session, redirecting to dashboard`);
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
+  // Handle dashboard path
+  if (path === "/dashboard" || path.startsWith("/dashboard?")) {
+    log.debug(`Rewriting to app/dashboard`);
+    return NextResponse.rewrite(new URL("/app/dashboard", req.url));
+  }
+
+  // Rewrite to the app directory for all other paths
+  const rewritePath = `/app${path === "/" ? "" : path}`;
+  log.debug(`Rewriting to app directory: ${rewritePath}`);
+  return NextResponse.rewrite(new URL(rewritePath, req.url));
+}
+
+/**
+ * Handle root domain requests
+ */
+function handleRootDomain(req: NextRequest, path: string): NextResponse {
+  log.debug(`Handling root domain`);
+  return NextResponse.rewrite(
+    new URL(`/home${path === "/" ? "" : path}`, req.url)
+  );
+}
+
+/**
+ * Main middleware function
+ */
+export default async function middleware(req: NextRequest) {
+  const url = req.nextUrl;
+  
+  // Skip for auth endpoints
+  const skipResponse = skipForAuthEndpoints(url);
+  if (skipResponse) return skipResponse;
+
+  // Get hostname and handle preview URLs
+  let hostname = req.headers.get("host") || "";
+  hostname = transformPreviewHostname(hostname);
+
+  // Get the path with search params
   const searchParams = req.nextUrl.searchParams.toString();
-  // Get the pathname of the request (e.g. /, /about, /blog/first-post)
-  const path = `${url.pathname}${searchParams.length > 0 ? `?${searchParams}` : ""
-    }`;
+  const path = `${url.pathname}${
+    searchParams.length > 0 ? `?${searchParams}` : ""
+  }`;
+  
+  log.debug(`Processing request`, {
+    hostname,
+    path: url.pathname,
+    searchParams: searchParams || undefined
+  });
 
   // Check if this is an app subdomain request
   const isAppSubdomain =
@@ -58,65 +176,7 @@ export default async function middleware(req: NextRequest) {
 
   // Handle app subdomain (both development and production)
   if (isAppSubdomain) {
-    console.log("Middleware: Handling app subdomain");
-
-    // Skip auth check for callback URLs and login page
-    if (url.pathname === "/login") {
-      console.log("Middleware: Login page, allowing access");
-      return NextResponse.rewrite(new URL("/app/login", req.url));
-    }
-
-    // Error page should also be accessible without authentication
-    if (url.pathname === "/login" && url.searchParams.has("error")) {
-      console.log("Middleware: Login error page, allowing access");
-      return NextResponse.rewrite(new URL("/app/login", req.url));
-    }
-
-    // For all other app routes, check session
-    try {
-      const session = await getToken({
-        req,
-        // Make sure to use the same secret as in the auth config
-        secret: process.env.NEXTAUTH_SECRET,
-        // Specify the cookie name to ensure we're checking the right cookie
-        cookieName: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
-        secureCookie: VERCEL_DEPLOYMENT,
-      });
-
-      console.log("Middleware: Session check result:", !!session);
-
-      // If no session and not on login page, redirect to login
-      if (!session) {
-        console.log("Middleware: No session, redirecting to login");
-        // Use an absolute URL to prevent localhost:3000 issues
-        const loginUrl = new URL("/login", req.url);
-        // Make sure to preserve the original URL as callbackUrl
-        loginUrl.searchParams.set("callbackUrl", url.pathname);
-        return NextResponse.redirect(loginUrl);
-      }
-
-      // Session exists, handle routes
-      if (path === "/") {
-        console.log("Middleware: Root path with session, redirecting to dashboard");
-        return NextResponse.redirect(new URL("/dashboard", req.url));
-      }
-
-      // Handle dashboard path
-      if (path === "/dashboard" || path.startsWith("/dashboard?")) {
-        console.log("Middleware: Rewriting to app/dashboard");
-        return NextResponse.rewrite(new URL("/app/dashboard", req.url));
-      }
-
-      // Rewrite to the app directory for all other paths
-      console.log("Middleware: Rewriting to app directory:", `/app${path === "/" ? "" : path}`);
-      return NextResponse.rewrite(
-        new URL(`/app${path === "/" ? "" : path}`, req.url),
-      );
-    } catch (error) {
-      console.error("Middleware: Error checking session:", error);
-      // On error, redirect to login for safety
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
+    return handleAppSubdomain(req, url, path);
   }
 
   // Handle root domain (both development and production)
@@ -126,13 +186,10 @@ export default async function middleware(req: NextRequest) {
     hostname === `www.${rootDomain}`;
 
   if (isRootDomain) {
-    console.log("Middleware: Handling root domain");
-    return NextResponse.rewrite(
-      new URL(`/home${path === "/" ? "" : path}`, req.url),
-    );
+    return handleRootDomain(req, path);
   }
 
   // For any other hostnames, rewrite to the appropriate path
-  console.log("Middleware: Handling other hostname:", hostname);
+  log.debug(`Handling other hostname: ${hostname}`);
   return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url));
 }

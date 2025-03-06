@@ -64,7 +64,7 @@ export function FeaturesSection() {
               <CardContent>
                 <CardDescription>
                   Drag-and-drop interface to create data models, establish
-                  relationships, and visualize your data hierarchy without
+                  relationships, and <span className="text-primary font-medium">visualize your data hierarchy</span> without
                   writing code.
                 </CardDescription>
               </CardContent>
@@ -78,8 +78,8 @@ export function FeaturesSection() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Describe what you need in plain English, and our AI will
-                  suggest appropriate data models, field types, and realistic
+                  Describe what you need in plain English, and our <span className="text-primary font-medium">AI will
+                  suggest</span> appropriate data models, field types, and realistic
                   values.
                 </CardDescription>
               </CardContent>
@@ -94,7 +94,7 @@ export function FeaturesSection() {
               <CardContent>
                 <CardDescription>
                   Define complex relationships between entities with visual
-                  connectors. Our system ensures referential integrity across
+                  connectors. Our system ensures <span className="text-primary font-medium">referential integrity</span> across
                   your generated data.
                 </CardDescription>
               </CardContent>
@@ -104,7 +104,7 @@ export function FeaturesSection() {
           {/* Right column - Visual Editor and Code block (full width on mobile, 2/3 width on desktop) */}
           <div className="lg:col-span-2 flex flex-col space-y-4 md:space-y-6 overflow-hidden lg:h-full">
             {/* Generated Data - Added overflow handling to prevent horizontal scroll */}
-            <Card className="w-full h-full flex flex-col">
+            <Card className="w-full h-full flex flex-col border-primary/20">
               <CardContent className="p-0 flex-grow flex flex-col">
                 <CodeBlock
                   title="Generated Mock Data"

@@ -13,22 +13,30 @@ import { Github } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
+import { getAuthErrorMessage, getAuthErrorClassName } from "@/lib/auth-errors";
+import { logger } from "@/lib/logger";
+
+// Create a module-specific logger
+const log = logger.forModule("login");
 
 // LoginForm component that uses useSearchParams
 function LoginForm() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Get the error message from the error code
+  const errorMessage = getAuthErrorMessage(error);
 
   const handleSignIn = async () => {
     try {
       setIsLoading(true);
-      console.log("Starting GitHub sign-in");
+      log.debug("Starting GitHub sign-in");
 
       // First make sure CSRF token is loaded
       const csrfResponse = await fetch('/api/auth/csrf');
       if (!csrfResponse.ok) {
-        console.error("Failed to fetch CSRF token");
+        log.error("Failed to fetch CSRF token");
       }
       
       // Use a simple relative URL for the dashboard
@@ -36,7 +44,7 @@ function LoginForm() {
         callbackUrl: "/dashboard",
       });
     } catch (error) {
-      console.error("Authentication error:", error);
+      log.error("Authentication error", { error });
     } finally {
       setIsLoading(false);
     }
@@ -49,15 +57,9 @@ function LoginForm() {
         <CardDescription>
           Sign in to your account using GitHub
         </CardDescription>
-        {error && (
-          <div className="p-3 bg-red-100 border border-red-300 rounded-md text-red-800 text-sm">
-            {error === "Configuration"
-              ? "There was a problem with the authentication configuration. Please try again."
-              : error === "AccessDenied"
-              ? "You don't have permission to access this resource."
-              : error === "MissingCSRF"
-              ? "Security token was missing. Please try clearing your cookies and refreshing the page."
-              : `Authentication error: ${error}`}
+        {errorMessage && (
+          <div className={getAuthErrorClassName()}>
+            {errorMessage}
           </div>
         )}
       </CardHeader>

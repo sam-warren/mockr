@@ -11,7 +11,7 @@ export default function AuthLayout({
       <GridBackground />
 
       {/* Main content */}
-      <main className="relative z-10 flex-1 flex items-start justify-center pt-[15vh]">
+      <main className="relative z-10 flex-1 flex items-start justify-center pt-[35vh]">
         {children}
       </main>
     </div>

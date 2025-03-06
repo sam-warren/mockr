@@ -2,6 +2,19 @@ import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import type { NextAuthConfig } from "next-auth";
 import type { Session, User } from "next-auth";
+import { 
+  isDevelopment, 
+  appBaseUrl,
+  dashboardUrl,
+  getBaseCookieOptions,
+  getCookiePrefix,
+  getCsrfCookiePrefix,
+  transformLocalhost
+} from "@/lib/env-config";
+import { logger } from "@/lib/logger";
+
+// Create a module-specific logger
+const log = logger.forModule("auth");
 
 if (!process.env.AUTH_GITHUB_ID || !process.env.AUTH_GITHUB_SECRET) {
   throw new Error("Missing GitHub OAuth credentials. Please add AUTH_GITHUB_ID and AUTH_GITHUB_SECRET to your .env.local file.");
@@ -11,28 +24,18 @@ if (!process.env.NEXTAUTH_SECRET) {
   throw new Error("Missing NEXTAUTH_SECRET. Please add NEXTAUTH_SECRET to your .env.local file.");
 }
 
-// Check if we're in a Vercel deployment environment
-const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
-const isDevelopment = process.env.NODE_ENV === "development";
-const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "mockr.io";
-
-// Calculate the base URL for auth callbacks based on environment
-const baseAuthUrl = isDevelopment 
-  ? "http://app.localhost:3000" 
-  : `https://app.${rootDomain}`;
-
 // Set NEXTAUTH_URL dynamically based on environment if not already set
 if (!process.env.NEXTAUTH_URL) {
-  process.env.NEXTAUTH_URL = baseAuthUrl;
-  console.log(`[auth] Setting NEXTAUTH_URL to ${baseAuthUrl}`);
+  process.env.NEXTAUTH_URL = appBaseUrl;
+  log.info(`Setting NEXTAUTH_URL to ${appBaseUrl}`);
 }
 
 // Additional validation to ensure NEXTAUTH_URL isn't pointing to localhost in production
 if (!isDevelopment && process.env.NEXTAUTH_URL?.includes('localhost')) {
-  console.warn(`[auth][warning] NEXTAUTH_URL contains "localhost" in production environment: ${process.env.NEXTAUTH_URL}`);
+  log.warn(`NEXTAUTH_URL contains "localhost" in production environment: ${process.env.NEXTAUTH_URL}`);
   // Override with the correct URL
-  process.env.NEXTAUTH_URL = baseAuthUrl;
-  console.log(`[auth] Corrected NEXTAUTH_URL to ${baseAuthUrl}`);
+  process.env.NEXTAUTH_URL = appBaseUrl;
+  log.info(`Corrected NEXTAUTH_URL to ${appBaseUrl}`);
 }
 
 // Extend the User type to include GitHub username
@@ -91,72 +94,34 @@ export const authConfig = {
   },
   cookies: {
     sessionToken: {
-      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        // When in development, set the domain to the root localhost domain
-        // to allow cookie sharing between subdomains
-        domain: isDevelopment
-          ? ".localhost"
-          : VERCEL_DEPLOYMENT
-            ? `.${rootDomain}`
-            : undefined,
-        secure: VERCEL_DEPLOYMENT,
-      },
+      name: `${getCookiePrefix()}next-auth.session-token`,
+      options: getBaseCookieOptions(),
     },
-    // Add explicit configuration for other cookies
     callbackUrl: {
-      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.callback-url`,
-      options: {
-        sameSite: "lax",
-        path: "/",
-        domain: isDevelopment
-          ? ".localhost"
-          : VERCEL_DEPLOYMENT
-            ? `.${rootDomain}`
-            : undefined,
-        secure: VERCEL_DEPLOYMENT,
-      },
+      name: `${getCookiePrefix()}next-auth.callback-url`,
+      options: getBaseCookieOptions(),
     },
     csrfToken: {
-      name: `${VERCEL_DEPLOYMENT ? "__Host-" : ""}next-auth.csrf-token`,
+      name: `${getCsrfCookiePrefix()}next-auth.csrf-token`,
       options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: isDevelopment
-          ? ".localhost"
-          : undefined, // For CSRF tokens in production, DO NOT set a domain to enhance security
-        secure: VERCEL_DEPLOYMENT,
+        ...getBaseCookieOptions(false),
+        // For CSRF tokens in production, DO NOT set a domain to enhance security
+        domain: isDevelopment ? ".localhost" : undefined,
       },
     },
   },
-  // Add explicit CSRF protection configuration
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async redirect({ url }) {
-      // Get the app URL for the current environment
-      const appUrl = isDevelopment
-        ? "http://app.localhost:3000"
-        : `https://app.${rootDomain}`;
-
-      console.log("NextAuth redirect callback called with URL:", url);
-
-      // Default destination is the dashboard
-      const dashboardUrl = `${appUrl}/dashboard`;
+      log.debug(`Redirect callback called with URL: ${url}`);
 
       // If the URL contains "localhost" in production, replace it with the proper domain
       if (!isDevelopment && url.includes("localhost")) {
-        // Handle localhost URLs in production by replacing with proper domain
-        console.log("NextAuth redirect: Found localhost URL in production, fixing:", url);
-        const fixedUrl = url.replace(/http:\/\/(?:app\.)?localhost:3000/g, appUrl);
+        const fixedUrl = transformLocalhost(url);
         
         // Special handling for GitHub callback URLs
         if (fixedUrl.includes("/api/auth/callback/github")) {
-          console.log("NextAuth redirect: Fixed GitHub callback URL:", fixedUrl);
-          // For GitHub callbacks, always redirect to dashboard after successful auth
+          log.debug(`Fixed GitHub callback URL: ${fixedUrl}`);
           return dashboardUrl;
         }
         
@@ -164,20 +129,20 @@ export const authConfig = {
       }
 
       // Auth callback or unknown URL - always go to dashboard
-      if (url.includes("/api/auth/callback") || (!url.startsWith("/") && !url.startsWith(appUrl))) {
-        console.log("NextAuth redirect: Auth callback or unknown URL, redirecting to:", dashboardUrl);
+      if (url.includes("/api/auth/callback") || (!url.startsWith("/") && !url.startsWith(appBaseUrl))) {
+        log.debug(`Auth callback or unknown URL, redirecting to dashboard`);
         return dashboardUrl;
       }
 
       // Relative URL - prepend app URL
       if (url.startsWith("/")) {
-        const fullUrl = `${appUrl}${url}`;
-        console.log("NextAuth redirect: Relative URL, redirecting to:", fullUrl);
+        const fullUrl = `${appBaseUrl}${url}`;
+        log.debug(`Relative URL, redirecting to: ${fullUrl}`);
         return fullUrl;
       }
 
       // URL is already on app domain - allow it
-      console.log("NextAuth redirect: URL already on app domain, allowing:", url);
+      log.debug(`URL already on app domain, allowing: ${url}`);
       return url;
     },
     async jwt({ token, user }) {
@@ -205,30 +170,23 @@ export const authConfig = {
   debug: isDevelopment,
   events: {
     async signIn(message) {
-      if (isDevelopment) {
-        console.log("[auth][debug] signIn event", { message });
-      }
+      log.debug(`signIn event`, { message });
     },
     async signOut(message) {
-      if (isDevelopment) {
-        console.log("[auth][debug] signOut event", { message });
-      }
+      log.debug(`signOut event`, { message });
     },
     async createUser(message) {
-      if (isDevelopment) {
-        console.log("[auth][debug] createUser event", { message });
-      }
+      log.debug(`createUser event`, { message });
     },
   }
 } satisfies NextAuthConfig;
 
-// Create a custom logger for NextAuth errors
+// Log initialization in development
 if (isDevelopment) {
-  console.log("[auth][debug] NextAuth initialized with config:", {
+  log.debug(`NextAuth initialized`, {
     providers: authConfig.providers.map(p => p.id),
     pages: authConfig.pages,
     debug: authConfig.debug,
-    cookies: Object.keys(authConfig.cookies || {})
   });
 }
 

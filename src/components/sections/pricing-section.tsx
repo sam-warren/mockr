@@ -106,7 +106,7 @@ export function PricingSection() {
               </div>
             </CardContent>
             <CardFooter className="mt-auto pt-4">
-              <Button className="w-full cursor-pointer">
+              <Button className="w-full cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90">
                 Start Free Trial
               </Button>
             </CardFooter>
