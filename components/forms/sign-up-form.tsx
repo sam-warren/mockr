@@ -14,10 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 // import Image from "next/image";
 
-export function SignUpForm({
+function SignUpFormInner({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
@@ -149,5 +149,13 @@ export function SignUpForm({
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export function SignUpForm(props: React.ComponentPropsWithoutRef<"div">) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignUpFormInner {...props} />
+    </Suspense>
   );
 }
