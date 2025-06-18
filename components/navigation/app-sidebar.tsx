@@ -1,6 +1,6 @@
 "use client";
 
-import { IconFoldersFilled, IconHelp } from "@tabler/icons-react";
+import { IconFoldersFilled, IconHelp, IconTemplate } from "@tabler/icons-react";
 import * as React from "react";
 
 import { NavMain } from "@/components/navigation/nav-main";
@@ -28,6 +28,11 @@ const data = {
       title: "My Mocks",
       url: "/mocks",
       icon: IconFoldersFilled,
+    },
+    {
+      title: "Templates",
+      url: "/templates",
+      icon: IconTemplate,
     },
   ],
   navSecondary: [
