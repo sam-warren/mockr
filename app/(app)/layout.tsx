@@ -5,10 +5,10 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 export default function AppLayout({
   children,
   breadcrumbs,
-}: {
+}: Readonly<{
   children: React.ReactNode;
   breadcrumbs: React.ReactNode;
-}) {
+}>) {
   return (
     <SidebarProvider
       style={
