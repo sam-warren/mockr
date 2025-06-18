@@ -10,7 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRealtimeMock } from "@/hooks/use-realtime-mock";
+import { useStreamingMock } from "@/hooks/use-streaming-mock";
+import { getMockGeneration } from "@/lib/supabase/actions/mock-generation";
 import {
   ArrowLeft,
   CheckCircle,
@@ -21,7 +22,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface MockGenerationViewProps {
@@ -31,24 +32,94 @@ interface MockGenerationViewProps {
 export default function MockGenerationView({
   generationId,
 }: MockGenerationViewProps) {
-  const {
-    mockGeneration,
-    isLoading,
-    error,
-    isCompleted,
-    isFailed,
-    isProcessing,
-    isPending,
-  } = useRealtimeMock(generationId);
   const router = useRouter();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [mockGeneration, setMockGeneration] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [needsStreaming, setNeedsStreaming] = useState(false);
+
+  // Streaming hook - only used when needed
+  const {
+    isStreaming,
+    progress,
+    streamedContent,
+    generatedData,
+    error: streamError,
+    processingTime,
+    isComplete: streamComplete,
+    startStreaming,
+    cancelStreaming,
+    hasStarted,
+  } = useStreamingMock({
+    generationId,
+    prompt: mockGeneration?.generation_prompt || "",
+    jsonSchema: mockGeneration?.generation_schema || null,
+    generationType: mockGeneration?.generation_type || "prompt",
+    sampleSize: 10,
+    onComplete: (data: unknown[]) => {
+      toast.success(`Successfully generated ${data.length} records!`);
+      // Refresh the generation data
+      loadGeneration();
+    },
+    onError: (error: string) => {
+      toast.error(`Generation failed: ${error}`);
+      loadGeneration();
+    },
+  });
+
+  // Load generation data
+  const loadGeneration = async () => {
+    try {
+      const result = await getMockGeneration(generationId);
+      if (result.success && result.data) {
+        setMockGeneration(result.data);
+        
+        // Check if we need to start streaming
+        const status = result.data.generation_status;
+        if (status === 'pending' || status === 'processing') {
+          setNeedsStreaming(true);
+        } else if (status === 'failed') {
+          // For failed generations, we can allow retry
+          setNeedsStreaming(false);
+        }
+      } else {
+        setError(result.error || "Generation not found");
+      }
+    } catch (err) {
+      setError("Failed to load generation data");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    loadGeneration();
+  }, [generationId]);
+
+  // Auto-start streaming if needed
+  useEffect(() => {
+    if (needsStreaming && mockGeneration && !hasStarted) {
+      startStreaming();
+    }
+  }, [needsStreaming, mockGeneration, hasStarted, startStreaming]);
+
+  // Derived status helpers
+  const isPending = mockGeneration?.generation_status === 'pending';
+  const isProcessing = mockGeneration?.generation_status === 'processing' || isStreaming;
+  const isCompleted = mockGeneration?.generation_status === 'completed' || streamComplete;
+  const isFailed = mockGeneration?.generation_status === 'failed' || streamError;
+
+  // Get the data to display (streamed data takes precedence)
+  const displayData = generatedData || mockGeneration?.generated_data;
 
   const handleCopyJson = async () => {
-    if (!mockGeneration?.generated_data) return;
+    if (!displayData) return;
 
     try {
       await navigator.clipboard.writeText(
-        JSON.stringify(mockGeneration.generated_data, null, 2)
+        JSON.stringify(displayData, null, 2)
       );
       toast.success("JSON copied to clipboard!");
     } catch {
@@ -57,12 +128,12 @@ export default function MockGenerationView({
   };
 
   const handleDownloadJson = () => {
-    if (!mockGeneration?.generated_data) return;
+    if (!displayData) return;
 
     setIsDownloading(true);
     try {
       const blob = new Blob(
-        [JSON.stringify(mockGeneration.generated_data, null, 2)],
+        [JSON.stringify(displayData, null, 2)],
         {
           type: "application/json",
         }
@@ -236,7 +307,7 @@ export default function MockGenerationView({
 
         {isProcessing && (
           <Card>
-            <CardContent className="flex items-center justify-center py-12">
+            <CardContent className="space-y-4 py-6">
               <div className="text-center space-y-4">
                 <Loader2 className="h-12 w-12 mx-auto animate-spin text-primary" />
                 <div>
@@ -244,76 +315,120 @@ export default function MockGenerationView({
                     Generating Mock Data
                   </h3>
                   <p className="text-muted-foreground">
-                    AI is crafting your data... This usually takes 10-30
-                    seconds.
+                    {progress || "AI is crafting your data..."}
                   </p>
+                  {processingTime && (
+                    <p className="text-sm text-muted-foreground">
+                      Processing time: {processingTime}ms
+                    </p>
+                  )}
                 </div>
+              </div>
+              
+              {/* Cancel button during streaming */}
+              {isStreaming && (
+                <div className="flex justify-center pt-4">
+                  <Button variant="outline" size="sm" onClick={cancelStreaming}>
+                    Cancel Generation
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+                  )}
+
+        {/* Live streaming content preview */}
+        {isStreaming && streamedContent && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Live Generation Preview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="border rounded-lg bg-muted/50 p-4 max-h-48 overflow-auto">
+                <pre className="text-sm whitespace-pre-wrap font-mono">
+                  {streamedContent}
+                </pre>
               </div>
             </CardContent>
           </Card>
         )}
 
-        {isFailed && mockGeneration.error_message && (
+        {(isFailed || streamError) && (
           <Alert variant="destructive">
             <XCircle className="h-4 w-4" />
             <AlertDescription>
-              Generation failed: {mockGeneration.error_message}
+              <div className="flex items-center justify-between">
+                <span>
+                  Generation failed: {streamError || mockGeneration?.error_message || "Unknown error"}
+                </span>
+                {mockGeneration && !isStreaming && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => {
+                      setNeedsStreaming(true);
+                      // Reset the generation status to pending to trigger retry
+                      setMockGeneration((prev: any) => prev ? {...prev, generation_status: 'pending'} : prev);
+                    }}
+                  >
+                    Retry Generation
+                  </Button>
+                )}
+              </div>
             </AlertDescription>
           </Alert>
         )}
 
         {/* Generated Data */}
-        {isCompleted &&
-          mockGeneration.generated_data &&
-          Array.isArray(mockGeneration.generated_data) && (
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-600" />
-                      Generated Mock Data
-                    </CardTitle>
-                    <CardDescription>
-                      Successfully generated {mockGeneration.record_count}{" "}
-                      records
-                    </CardDescription>
-                  </div>
+        {isCompleted && displayData && Array.isArray(displayData) && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    Generated Mock Data
+                  </CardTitle>
+                  <CardDescription>
+                    Successfully generated {displayData.length} records
+                    {processingTime && ` in ${processingTime}ms`}
+                  </CardDescription>
+                </div>
 
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleCopyJson}
-                    >
-                      <Copy className="mr-2 h-4 w-4" />
-                      Copy JSON
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleDownloadJson}
-                      disabled={isDownloading}
-                    >
-                      {isDownloading ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        <Download className="mr-2 h-4 w-4" />
-                      )}
-                      Download
-                    </Button>
-                  </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopyJson}
+                  >
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy JSON
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleDownloadJson}
+                    disabled={isDownloading}
+                  >
+                    {isDownloading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Download className="mr-2 h-4 w-4" />
+                    )}
+                    Download
+                  </Button>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="border rounded-lg bg-muted/50 p-4">
-                  <pre className="text-sm overflow-auto max-h-96 whitespace-pre-wrap">
-                    {JSON.stringify(mockGeneration.generated_data, null, 2)}
-                  </pre>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="border rounded-lg bg-muted/50 p-4">
+                <pre className="text-sm overflow-auto max-h-96 whitespace-pre-wrap">
+                  {JSON.stringify(displayData, null, 2)}
+                </pre>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

@@ -3,7 +3,6 @@
 import { createClient } from '../server'
 import { revalidatePath } from 'next/cache'
 import { ActionResult } from './user'
-import { redirect } from 'next/navigation'
 export interface MockGeneration {
   id: string
   user_id: string
@@ -254,14 +253,24 @@ export async function deleteMockTemplate(id: string): Promise<ActionResult> {
   }
 }
 
-// Create mock placeholder and redirect to view page
-export async function createMockPlaceholder(formData: FormData): Promise<never> {
+// Creates initial database record for streaming generation via AI SDK
+export async function createMockPlaceholderForStreaming(formData: FormData): Promise<{
+  success: boolean
+  generationId?: string
+  generationData?: {
+    prompt: string
+    jsonSchema: Record<string, unknown> | null
+    generationType: 'prompt' | 'schema' | 'hybrid'
+    sampleSize: number
+  }
+  error?: string
+}> {
   try {
     const supabase = await createClient()
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
-      throw new Error('User not authenticated')
+      return { success: false, error: 'User not authenticated' }
     }
 
     // Check user credits
@@ -272,11 +281,11 @@ export async function createMockPlaceholder(formData: FormData): Promise<never> 
       .single()
 
     if (creditsError || !userCredits) {
-      throw new Error('Failed to check user credits')
+      return { success: false, error: 'Failed to check user credits' }
     }
 
     if (userCredits.credits_available < 1) {
-      throw new Error('Insufficient credits. Please purchase more credits to continue.')
+      return { success: false, error: 'Insufficient credits. Please purchase more credits to continue.' }
     }
 
     const prompt = formData.get('prompt') as string
@@ -289,7 +298,7 @@ export async function createMockPlaceholder(formData: FormData): Promise<never> 
       try {
         jsonSchema = JSON.parse(jsonSchemaStr)
       } catch {
-        throw new Error('Invalid JSON schema format')
+        return { success: false, error: 'Invalid JSON schema format' }
       }
     }
 
@@ -305,7 +314,7 @@ export async function createMockPlaceholder(formData: FormData): Promise<never> 
     } else if (hasPrompt) {
       generationType = 'prompt'
     } else {
-      throw new Error('Please provide either a prompt description or a JSON schema')
+      return { success: false, error: 'Please provide either a prompt description or a JSON schema' }
     }
 
     // Create initial mock generation record with pending status
@@ -327,158 +336,23 @@ export async function createMockPlaceholder(formData: FormData): Promise<never> 
 
     if (insertError) {
       console.error('Error creating mock generation:', insertError)
-      throw new Error('Failed to create generation record')
+      return { success: false, error: 'Failed to create generation record' }
     }
 
-    // Start async generation process
-    generateMockDataAsync(mockGeneration.id, {
-      prompt,
-      jsonSchema,
-      generationType,
-      sampleSize,
-    }, user.id)
-
-    // Redirect to the individual mock page
-    redirect(`/mocks/${mockGeneration.id}`)
+    return {
+      success: true,
+      generationId: mockGeneration.id,
+      generationData: {
+        prompt,
+        jsonSchema,
+        generationType,
+        sampleSize,
+      }
+    }
   } catch (error) {
     console.error('Create mock placeholder error:', error)
-    // For server actions that redirect, we can't show toasts directly
-    // So we'll throw the error and let the client handle it
-    throw error
+    return { success: false, error: 'An unexpected error occurred' }
   }
 }
 
-// Async function to handle the actual generation (runs in background)
-async function generateMockDataAsync(
-  generationId: string, 
-  options: {
-    prompt: string
-    jsonSchema: Record<string, unknown> | null
-    generationType: 'prompt' | 'schema' | 'hybrid'
-    sampleSize: number
-  },
-  userId: string
-) {
-  // Import OpenAI dynamically to avoid issues
-  const { default: OpenAI } = await import('openai')
-  
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  })
-  
-  const supabase = await createClient()
-  
-  try {
-    // Update status to processing
-    await supabase
-      .from('mock_generations')
-      .update({ generation_status: 'processing' })
-      .eq('id', generationId)
-
-    const startTime = Date.now()
-
-    // Build optimized prompt for speed
-    const systemPrompt = `Generate realistic JSON mock data that follows all requirements exactly.
-Rules: Return {"data": [array of objects]}, all required fields present, realistic values, proper formats.`
-
-    let userPrompt = ''
-    switch (options.generationType) {
-      case 'prompt':
-        userPrompt = `Generate ${options.sampleSize} records: ${options.prompt}`
-        break
-      case 'schema':
-        userPrompt = `Generate ${options.sampleSize} records following this schema: ${JSON.stringify(options.jsonSchema, null, 0)}`
-        break
-      case 'hybrid':
-        userPrompt = `Generate ${options.sampleSize} records for: ${options.prompt}\nSchema: ${JSON.stringify(options.jsonSchema, null, 0)}`
-        break
-    }
-
-    // Call OpenAI
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.7,
-      max_tokens: Math.min(1500, options.sampleSize * 200),
-      response_format: { type: 'json_object' },
-    })
-
-    const response = completion.choices[0]?.message?.content
-    if (!response) {
-      throw new Error('No response from OpenAI')
-    }
-
-    const parsedResponse = JSON.parse(response) as Record<string, unknown>
-    const mockData = Array.isArray(parsedResponse.data) ? parsedResponse.data : 
-                     Array.isArray(parsedResponse) ? parsedResponse : []
-    
-    if (!Array.isArray(mockData)) {
-      throw new Error('Generated data is not an array')
-    }
-
-    const processingTime = Date.now() - startTime
-
-    // Consume user credits
-    const { error: consumeError } = await supabase.rpc('consume_user_credits', {
-      p_user_id: userId,
-      p_credits_needed: 1
-    })
-
-    if (consumeError) {
-      console.error('Error consuming credits:', consumeError)
-    }
-
-    // Update with completed generation
-    await supabase
-      .from('mock_generations')
-      .update({
-        generated_data: mockData.slice(0, options.sampleSize),
-        record_count: Math.min(mockData.length, options.sampleSize),
-        processing_time_ms: processingTime,
-        generation_status: 'completed',
-        completed_at: new Date().toISOString(),
-      })
-      .eq('id', generationId)
-
-    // Log success
-    await supabase
-      .from('generation_logs')
-      .insert({
-        user_id: userId,
-        generation_id: generationId,
-        event_type: 'generation_completed',
-        message: `Successfully generated ${Math.min(mockData.length, options.sampleSize)} mock records`,
-        metadata: {
-          processing_time_ms: processingTime,
-          generation_type: options.generationType,
-          sample_size: options.sampleSize,
-        },
-      })
-
-  } catch (error) {
-    console.error('Async generation error:', error)
-    
-    // Update with error status
-    await supabase
-      .from('mock_generations')
-      .update({
-        generation_status: 'failed',
-        error_message: error instanceof Error ? error.message : 'Unknown error',
-        completed_at: new Date().toISOString(),
-      })
-      .eq('id', generationId)
-
-    // Log error
-    await supabase
-      .from('generation_logs')
-      .insert({
-        user_id: userId,
-        generation_id: generationId,
-        event_type: 'generation_failed',
-        message: `Generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      })
-  }
-} 
+ 

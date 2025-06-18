@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 import {
   Card,
@@ -15,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Loader2, Sparkles, Zap } from "lucide-react";
-import { createMockPlaceholder } from "@/lib/supabase/actions/mock-generation";
+import { createMockPlaceholderForStreaming } from "@/lib/supabase/actions/mock-generation";
 
 const SAMPLE_SCHEMA = `{
   "type": "object",
@@ -34,15 +35,23 @@ export default function NewMockPage() {
   const [sampleSize] = useState(5);
   const [jsonSchema] = useState("");
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleSubmit = (formData: FormData) => {
-    startTransition(() => {
-      createMockPlaceholder(formData).catch((error) => {
-        if (error instanceof Error && error.message !== "NEXT_REDIRECT") {
-          console.error(error);
-          toast.error(error.message);
+    startTransition(async () => {
+      try {
+        const result = await createMockPlaceholderForStreaming(formData);
+        
+        if (result.success && result.generationId) {
+          // Navigate to the generation page (streaming will happen there)
+          router.push(`/mocks/${result.generationId}`);
+        } else {
+          toast.error(result.error || "Failed to create generation");
         }
-      });
+      } catch (error) {
+        console.error(error);
+        toast.error(error instanceof Error ? error.message : "Failed to create generation");
+      }
     });
   };
 
