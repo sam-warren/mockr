@@ -25,17 +25,17 @@
 ## **Day 2: Core Mock Generation Engine**
 
 ### **Morning (4 hours)**
-- [ ] **AI Mock Generation Logic**
-  - [ ] Create `/api/generate-mock` endpoint
-  - [ ] Implement prompt-based mock generation with OpenAI
-  - [ ] Add JSON schema parsing and validation
-  - [ ] Create reusable mock generation utilities
+- [X] **AI Mock Generation Logic**
+  - [X] Create mock generation server action
+  - [X] Implement prompt-based mock generation with OpenAI
+  - [X] Add JSON schema parsing and validation
+  - [] Create reusable mock generation utilities (note from Sam: What does this actually mean? Do we need this?)
 
 ### **Afternoon (4 hours)**
 - [ ] **Database Operations**
-  - [ ] Create mock CRUD operations
+  - [X] Create mock CRUD operations
   - [ ] Implement Supabase realtime for live mock updates
-  - [ ] Add user credit checking and deduction
+  - [X] Add user credit checking and deduction
 
 ---
 
@@ -50,10 +50,10 @@
 
 ### **Afternoon (4 hours)**
 - [ ] **Mocks List Page (`/mocks`)**
-  - [ ] Card grid of all user mocks
-  - [ ] Delete functionality
+  - [X] Card grid of all user mocks
+  - [X] Delete functionality
   - [ ] Search/filter options
-  - [ ] Click to view individual mock
+  - [X] Click to view individual mock
 
 ---
 
@@ -150,6 +150,17 @@
 
 ### **Monthly Subscription**
 - $10/month for 200 mocks + $0.02 per additional mock
+
+---
+
+## **Mock Generation Flow**
+- User visits `/mocks/new`
+- User inputs a prompt and/or uploads a JSON schema
+- User clicks "Generate Mock"
+- The mock placeholder is created in the database and the user is navigated to /mocks/:id
+- The server generates the mock data using OpenAI and populates the mock in the database, which is then displayed in real-time on the page using supabase realtime and streaming the response
+- User can then view, edit, or delete the mock
+- User can also download the mock data in various formats (JSON, SQL, Document (MongoDB))
 
 ---
 

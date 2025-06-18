@@ -1,3 +1,5 @@
+import MockGenerationView from './mock-generation-view'
+
 export default async function MockPage({
   params,
 }: {
@@ -5,5 +7,5 @@ export default async function MockPage({
 }) {
   const { id } = await params;
 
-  return <div>Mock {id}</div>;
+  return <MockGenerationView generationId={id} />;
 }

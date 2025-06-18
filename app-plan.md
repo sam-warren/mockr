@@ -25,3 +25,12 @@
 - Stripe integration
 - Credit system - users can buy credits to use the app OR
 - Monthly subscription service
+
+# Mock Generation Flow
+- User visits `/mocks/new`
+- User inputs a prompt and/or uploads a JSON schema
+- User clicks "Generate Mock"
+- The mock placeholder is created in the database and the user is navigated to /mocks/:id
+- The server generates the mock data using OpenAI and populates the mock in the database, which is then displayed in real-time on the page using supabase realtime and streaming the response
+- User can then view, edit, or delete the mock
+- User can also download the mock data in various formats (JSON, SQL, Document (MongoDB))
