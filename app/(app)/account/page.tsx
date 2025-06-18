@@ -18,7 +18,7 @@ import {
   getUserCredits,
   getGenerationStats,
   updateUserProfile,
-} from "@/lib/supabase/actions";
+} from "@/lib/supabase/actions/user";
 import { ProfileForm } from "@/components/forms/profile-form";
 
 interface UserProfile {

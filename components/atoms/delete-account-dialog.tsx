@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
-import type { ActionResult } from "@/lib/supabase/actions";
+import type { ActionResult } from "@/lib/supabase/actions/user";
 
 interface DeleteAccountDialogProps {
   deleteAction: () => Promise<ActionResult>;

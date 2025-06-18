@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from './server'
+import { createClient } from '../server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 

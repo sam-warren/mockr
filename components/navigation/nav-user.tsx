@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/sidebar";
 import { CurrentUserAvatar } from "../atoms/current-user-avatar";
 import { useRouter } from "next/navigation";
-import { signOut } from "@/lib/supabase/actions";
+import { signOut } from "@/lib/supabase/actions/user";
 import { createClient } from "@/lib/supabase/client";
 import { useState, useEffect } from "react";
 
