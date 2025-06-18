@@ -13,7 +13,7 @@ export default function Home() {
           router.push("/dashboard");
         }}
       >
-        Create Mock
+        Dashboard
       </Button>
     </div>
   );
