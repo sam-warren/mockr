@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  IconFoldersFilled,
-  IconHelp,
-  IconSchema
-} from "@tabler/icons-react";
+import { IconFoldersFilled, IconHelp } from "@tabler/icons-react";
 import * as React from "react";
 
 import { NavMain } from "@/components/navigation/nav-main";
@@ -23,26 +19,21 @@ import Link from "next/link";
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Sam Warren",
+    email: "sam@mockr.io",
+    avatar: "/avatars/sam.jpg",
   },
   navMain: [
     {
       title: "My Mocks",
-      url: "#",
+      url: "/mocks",
       icon: IconFoldersFilled,
     },
-    {
-      title: "Schemas",
-      url: "#",
-      icon: IconSchema,
-    }
   ],
   navSecondary: [
     {
       title: "Get Help",
-      url: "#",
+      url: "https://github.com/sam-warren/mockr/issues",
       icon: IconHelp,
     },
   ],
