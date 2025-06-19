@@ -1,183 +1,26 @@
-# 🚀 **Mockr 7-Day MVP Implementation Plan**
-
-## **Day 1: Foundation & Database (Critical Infrastructure)**
-
-### **Morning (4 hours)**
-- [X] **Environment Setup**
-  - [X] Create `.env.local` with Supabase keys
-  - [X] Update `package.json` name from "treatmenttracker" to "mockr"
-  - [X] Set up OpenAI API key for mock generation
-
-- [X] **Database Schema & Migrations**
-  - [X] Create `mocks` table (id, user_id, title, description, schema, generated_data, created_at)
-  - [X] Create `user_credits` table (user_id, credits, created_at, updated_at)
-  - [X] Set up Row Level Security (RLS) policies
-  - [X] Create database functions for credit management
-
-### **Afternoon (4 hours)**
-- [X] **Auth Flow Completion**
-  - [X] Test and fix login/signup forms
-  - [X] Ensure middleware properly protects app routes
-  - [X] Add user profile data handling (with server actions, proper form loading states, and nav integration)
-
----
-
-## **Day 2: Core Mock Generation Engine**
-
-### **Morning (4 hours)**
-- [X] **AI Mock Generation Logic**
-  - [X] Create mock generation server action
-  - [X] Implement prompt-based mock generation with OpenAI
-  - [X] Add JSON schema parsing and validation
-  - [] Create reusable mock generation utilities (note from Sam: What does this actually mean? Do we need this?)
-
-### **Afternoon (4 hours)**
-- [ ] **Database Operations**
-  - [X] Create mock CRUD operations
-  - [ ] Implement Supabase realtime for live mock updates
-  - [X] Add user credit checking and deduction
-
----
-
-## **Day 3: Core User Interface**
-
-### **Morning (4 hours)**
-- [ ] **Dashboard Page**
-  - [ ] Show recent 3 mocks
-  - [ ] New mock button
-  - [ ] Credit balance display
-  - [ ] Link to mock history
-
-### **Afternoon (4 hours)**
-- [ ] **Mocks List Page (`/mocks`)**
-  - [X] Card grid of all user mocks
-  - [X] Delete functionality
-  - [ ] Search/filter options
-  - [X] Click to view individual mock
-
----
-
-## **Day 4: Mock Creation & Viewing**
-
-### **Morning (4 hours)**
-- [ ] **New Mock Form (`/mocks/new`)**
-  - [ ] Prompt input field
-  - [ ] JSON schema upload
-  - [ ] Form validation with Zod
-  - [ ] Loading states during generation
-
-### **Afternoon (4 hours)**
-- [ ] **Individual Mock Page (`/mocks/[id]`)**
-  - [ ] Display generated mock data
-  - [ ] JSON viewer/formatter
-  - [ ] Copy to clipboard functionality
-  - [ ] Download as JSON
-
----
-
-## **Day 5: Payment System**
-
-### **Morning (4 hours)**
-- [ ] **Stripe Integration Setup**
-  - [ ] Install Stripe SDK
-  - [ ] Create Stripe products and prices
-  - [ ] Set up webhooks for payment processing
-
-### **Afternoon (4 hours)**
-- [ ] **Credit System**
-  - [ ] Credit purchase flow
-  - [ ] Subscription option setup
-  - [ ] Account page with billing portal link
-  - [ ] Credit usage tracking
-
----
-
-## **Day 6: Polish & Landing Page**
-
-### **Morning (4 hours)**
-- [ ] **Landing Page (`/`)**
-  - [ ] Hero section with value proposition
-  - [ ] Feature highlights
-  - [ ] Pricing information
-  - [ ] Call-to-action buttons
-
-### **Afternoon (4 hours)**
-- [ ] **UI/UX Polish**
-  - [ ] Loading states everywhere
-  - [ ] Error handling and user feedback
-  - [ ] Mobile responsiveness check
-  - [ ] Toast notifications with Sonner
-
----
-
-## **Day 7: Deploy & Launch**
-
-### **Morning (4 hours)**
-- [ ] **Production Deployment**
-  - [ ] Deploy to Vercel
-  - [ ] Set up production environment variables
-  - [ ] Configure custom domain (if available)
-  - [ ] Set up monitoring and analytics
-
-### **Afternoon (4 hours)**
-- [ ] **Testing & Bug Fixes**
-  - [ ] End-to-end user flow testing
-  - [ ] Payment flow testing
-  - [ ] Mobile testing
-  - [ ] Fix critical bugs
-
----
-
-## **Priority Features for MVP (Must-Have)**
-- ✅ User authentication
-- ✅ Mock generation from prompts
-- ✅ Credit-based payment system
-- ✅ Basic CRUD for mocks
-- ✅ Simple landing page
-
-## **Nice-to-Have (Post-MVP)**
-- [ ] JSON schema upload validation
-- [ ] Advanced mock customization
-- [ ] Mock sharing functionality
-- [ ] Usage analytics
-- [ ] Advanced landing page features
-
-## **Revenue Model Day 1**
-### **Credit System**
-- $5 for 100 mocks
-- $15 for 500 mocks
-- $25 for 1000 mocks
-
-### **Monthly Subscription**
-- $10/month for 200 mocks + $0.02 per additional mock
-
----
-
-## **Mock Generation Flow**
-- User visits `/mocks/new`
-- User inputs a prompt and/or uploads a JSON schema
-- User clicks "Generate Mock"
-- The mock placeholder is created in the database and the user is navigated to /mocks/:id
-- The server generates the mock data using OpenAI and populates the mock in the database, which is then displayed in real-time on the page using supabase realtime and streaming the response
-- User can then view, edit, or delete the mock
-- User can also download the mock data in various formats (JSON, SQL, Document (MongoDB))
-
----
-
-## **Daily Progress Tracking**
-- [X] Day 1 Complete
-- [ ] Day 2 Complete
-- [ ] Day 3 Complete
-- [ ] Day 4 Complete
-- [ ] Day 5 Complete
-- [ ] Day 6 Complete
-- [ ] Day 7 Complete - **LAUNCH DAY** 🚀
-
----
-
-## **Notes**
-- Focus on core functionality first
-- Test payment flow thoroughly
-- Keep UI simple but polished
-- Mobile-first responsive design
-- Error handling is critical for user experience 
+- [ ] Wire up search, filter, sort functionality on Mocks and Templates pages
+- [ ] Fix bug with icon size on my mocks page
+- [ ] Make the sidebar highlight the current route
+- [ ] Remove model from past mock view
+- [ ] Make the mock generation details more user friendly (drawer instead of dialog? or make it a sheet!)
+- [ ] JSON highlighting for schema input and generated data result -> Should match theme of application
+- [ ] Validation on JSON schema input
+- [ ] Check to compare generated data with schema
+- [ ] Improve layout of new mock page
+- [ ] Fix "number of records" display (the response is wrapped as an object so there's always only one record, will need to tweak prompt to always return an array or adjust how we display it by indexing into the object)
+- [ ] Don't show how many credits were used for each mock (each mock costs 1 credit)
+- [ ] Make top of page (where sidebar trigger and theme button are) sticky, while preserving rounded corners (this will be challenging for the agent, may need to do it manually)
+- [ ] Remove the ability for a user to change their display name, nav-user.tsx should just show their email before the @ in the case of email sign up
+- [ ] Add Google and GitHub OAuth
+- [ ] Add branding to auth pages, 404 page, also add back to home button to auth pages which redirects to /
+- [ ] Build hero page at /
+- [ ] Fix auth bug where clicking login creates a session but does not redirect the to the dashboard or respect the 'next' route query param
+- [ ] Add stripe integration so users can purchase credits and have their account balance updated right away
+- [ ] Decide on appropriate pricing model for credits (e.g. $5 for 100 credits, $20 for 500 credits, $50 for 1500 credits)
+- [ ] Create pricing marketing page showing discounts for each credit package - show "most popular" on the 500 credit package
+- [ ] Decide on a theme and style the app after that theme - should be poppy, colorful, SaaS-like
+- [ ] Add option to decide on number of records and add to prompt (1-20 records?)
+- [ ] Add constraint for maximum size of JSON schema uploaded so we don't run into issues with large schemas
+- [ ] Don't show number of records on the templates page
+- [ ] Make the generated data card scrollable area follow the bottom of the generation until the user scrolls up
+- [ ] Make sure all data fetching is done in server components (re-organize)

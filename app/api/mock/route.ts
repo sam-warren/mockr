@@ -83,12 +83,26 @@ IMPORTANT: Your response must be valid JSON. Do not include any explanatory text
         output: 'no-schema',
         async onFinish({ object }) {
             const recordCount = Array.isArray(object) ? object.length : 1
+            
+            let parsedSchema = null
+            if (schema) {
+                try {
+                    parsedSchema = JSON.parse(schema)
+                } catch (error) {
+                    console.warn('Failed to parse schema JSON:', error)
+                }
+            }
+            
             await admin.from('mock_generations').insert({
                 user_id: userId,
                 generation_prompt: prompt,
+                generation_schema: parsedSchema,
                 generation_type: 'prompt',
+                generation_status: 'completed',
                 generated_data: object,
                 record_count: recordCount,
+                ai_model_used: 'gpt-4o-mini',
+                credits_consumed: 1,
                 completed_at: new Date().toISOString(),
             })
         },

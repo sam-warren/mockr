@@ -1,0 +1,345 @@
+[
+  {
+    "id": "blog-posts",
+    "name": "Blog Posts",
+    "description": "Generate realistic blog post data with titles, content, authors, and metadata",
+    "category": "Content",
+    "prompt": "Generate blog post data with engaging titles, compelling content excerpts, author information, publication dates, tags, and view counts. Make the content diverse across different topics like technology, lifestyle, business, and travel.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" },
+          "slug": { "type": "string" },
+          "excerpt": { "type": "string" },
+          "content": { "type": "string" },
+          "author": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "email": { "type": "string" },
+              "avatar": { "type": "string" }
+            }
+          },
+          "publishedAt": { "type": "string", "format": "date-time" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "viewCount": { "type": "integer" },
+          "featured": { "type": "boolean" }
+        }
+      }
+    },
+    "sampleSize": 10,
+    "tags": ["content", "blog", "cms"]
+  },
+  {
+    "id": "user-profiles",
+    "name": "User Profiles",
+    "description": "Generate complete user profile data with personal information and preferences",
+    "category": "Users",
+    "prompt": "Generate diverse user profile data including names, emails, addresses, phone numbers, birth dates, profile pictures, and user preferences. Include a mix of different demographics and locations.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "dateOfBirth": { "type": "string", "format": "date" },
+          "address": {
+            "type": "object",
+            "properties": {
+              "street": { "type": "string" },
+              "city": { "type": "string" },
+              "state": { "type": "string" },
+              "zipCode": { "type": "string" },
+              "country": { "type": "string" }
+            }
+          },
+          "avatar": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "joinedAt": { "type": "string", "format": "date-time" },
+          "preferences": {
+            "type": "object",
+            "properties": {
+              "newsletter": { "type": "boolean" },
+              "theme": { "type": "string", "enum": ["light", "dark"] }
+            }
+          }
+        }
+      }
+    },
+    "sampleSize": 15,
+    "tags": ["users", "profiles", "authentication"]
+  },
+  {
+    "id": "employees",
+    "name": "Employee Records",
+    "description": "Generate employee data with job details, departments, and salary information",
+    "category": "Business",
+    "prompt": "Generate employee records with names, job titles, departments, hire dates, salaries, managers, and contact information. Include various departments like Engineering, Marketing, Sales, HR, and Finance.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "employeeId": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "jobTitle": { "type": "string" },
+          "department": { "type": "string" },
+          "manager": { "type": "string" },
+          "hireDate": { "type": "string", "format": "date" },
+          "salary": { "type": "number" },
+          "status": { "type": "string", "enum": ["active", "inactive", "on-leave"] },
+          "location": { "type": "string" },
+          "skills": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "sampleSize": 25,
+    "tags": ["hr", "employees", "business"]
+  },
+  {
+    "id": "products",
+    "name": "E-commerce Products",
+    "description": "Generate product catalog data with pricing, inventory, and specifications",
+    "category": "E-commerce",
+    "prompt": "Generate e-commerce product data including names, descriptions, prices, categories, SKUs, inventory levels, and product images. Include various product types like electronics, clothing, books, and home goods.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "sku": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "type": "string" },
+          "price": { "type": "number" },
+          "compareAtPrice": { "type": "number" },
+          "inventory": { "type": "integer" },
+          "images": { "type": "array", "items": { "type": "string" } },
+          "rating": { "type": "number", "minimum": 0, "maximum": 5 },
+          "reviewCount": { "type": "integer" },
+          "inStock": { "type": "boolean" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "sampleSize": 20,
+    "tags": ["ecommerce", "products", "inventory"]
+  },
+  {
+    "id": "medical-patients",
+    "name": "Patient Records",
+    "description": "Generate medical patient data with health information and visit history",
+    "category": "Healthcare",
+    "prompt": "Generate patient medical records with personal information, medical history, allergies, medications, and visit records. Use realistic medical terminology and ensure HIPAA-compliant sample data.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "patientId": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "dateOfBirth": { "type": "string", "format": "date" },
+          "gender": { "type": "string", "enum": ["male", "female", "other"] },
+          "bloodType": { "type": "string" },
+          "allergies": { "type": "array", "items": { "type": "string" } },
+          "medications": { "type": "array", "items": { "type": "string" } },
+          "emergencyContact": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "relationship": { "type": "string" },
+              "phone": { "type": "string" }
+            }
+          },
+          "lastVisit": { "type": "string", "format": "date" },
+          "primaryDoctor": { "type": "string" }
+        }
+      }
+    },
+    "sampleSize": 12,
+    "tags": ["healthcare", "medical", "patients"]
+  },
+  {
+    "id": "financial-transactions",
+    "name": "Financial Transactions",
+    "description": "Generate financial transaction data for banking and payment systems",
+    "category": "Finance",
+    "prompt": "Generate financial transaction records with amounts, dates, transaction types, merchant information, and account details. Include various transaction types like purchases, transfers, deposits, and withdrawals.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "transactionId": { "type": "string" },
+          "accountId": { "type": "string" },
+          "amount": { "type": "number" },
+          "currency": { "type": "string" },
+          "type": { "type": "string", "enum": ["debit", "credit"] },
+          "category": { "type": "string" },
+          "merchant": { "type": "string" },
+          "description": { "type": "string" },
+          "date": { "type": "string", "format": "date-time" },
+          "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+          "balance": { "type": "number" }
+        }
+      }
+    },
+    "sampleSize": 30,
+    "tags": ["finance", "banking", "payments"]
+  },
+  {
+    "id": "social-posts",
+    "name": "Social Media Posts",
+    "description": "Generate social media post data with engagement metrics and user interactions",
+    "category": "Social",
+    "prompt": "Generate social media posts with content, timestamps, user information, likes, comments, shares, and hashtags. Include various post types like text, images, and videos across different social platforms.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "postId": { "type": "string" },
+          "userId": { "type": "string" },
+          "username": { "type": "string" },
+          "content": { "type": "string" },
+          "mediaUrl": { "type": "string" },
+          "mediaType": { "type": "string", "enum": ["image", "video", "text"] },
+          "hashtags": { "type": "array", "items": { "type": "string" } },
+          "mentions": { "type": "array", "items": { "type": "string" } },
+          "likes": { "type": "integer" },
+          "comments": { "type": "integer" },
+          "shares": { "type": "integer" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "platform": { "type": "string" }
+        }
+      }
+    },
+    "sampleSize": 18,
+    "tags": ["social", "posts", "engagement"]
+  },
+  {
+    "id": "events",
+    "name": "Events & Conferences",
+    "description": "Generate event data with schedules, attendees, and venue information",
+    "category": "Events",
+    "prompt": "Generate event and conference data including titles, descriptions, dates, venues, organizers, ticket prices, and attendee information. Include various event types like conferences, workshops, concerts, and meetups.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "type": "string" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" },
+          "venue": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "address": { "type": "string" },
+              "capacity": { "type": "integer" }
+            }
+          },
+          "organizer": { "type": "string" },
+          "ticketPrice": { "type": "number" },
+          "maxAttendees": { "type": "integer" },
+          "registeredAttendees": { "type": "integer" },
+          "status": { "type": "string", "enum": ["upcoming", "ongoing", "completed", "cancelled"] }
+        }
+      }
+    },
+    "sampleSize": 8,
+    "tags": ["events", "conferences", "venues"]
+  },
+  {
+    "id": "restaurants",
+    "name": "Restaurant Menu Items",
+    "description": "Generate restaurant and menu data with dishes, prices, and nutritional information",
+    "category": "Food & Beverage",
+    "prompt": "Generate restaurant menu items with names, descriptions, prices, categories, ingredients, nutritional information, and dietary restrictions. Include various cuisines and food types.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "itemId": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "type": "string" },
+          "price": { "type": "number" },
+          "cuisine": { "type": "string" },
+          "ingredients": { "type": "array", "items": { "type": "string" } },
+          "allergens": { "type": "array", "items": { "type": "string" } },
+          "dietaryInfo": { "type": "array", "items": { "type": "string" } },
+          "calories": { "type": "integer" },
+          "spicyLevel": { "type": "integer", "minimum": 0, "maximum": 5 },
+          "available": { "type": "boolean" },
+          "image": { "type": "string" }
+        }
+      }
+    },
+    "sampleSize": 15,
+    "tags": ["food", "restaurants", "menu"]
+  },
+  {
+    "id": "orders",
+    "name": "E-commerce Orders",
+    "description": "Generate order data with customer information, items, and shipping details",
+    "category": "E-commerce",
+    "prompt": "Generate e-commerce order data including order IDs, customer information, ordered items, quantities, prices, shipping addresses, and order status. Include various order states and payment methods.",
+    "jsonSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "customerEmail": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": { "type": "string" },
+                "name": { "type": "string" },
+                "quantity": { "type": "integer" },
+                "price": { "type": "number" }
+              }
+            }
+          },
+          "subtotal": { "type": "number" },
+          "tax": { "type": "number" },
+          "shipping": { "type": "number" },
+          "total": { "type": "number" },
+          "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"] },
+          "paymentMethod": { "type": "string" },
+          "shippingAddress": {
+            "type": "object",
+            "properties": {
+              "street": { "type": "string" },
+              "city": { "type": "string" },
+              "state": { "type": "string" },
+              "zipCode": { "type": "string" }
+            }
+          },
+          "orderDate": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "sampleSize": 12,
+    "tags": ["ecommerce", "orders", "customers"]
+  }
+]
