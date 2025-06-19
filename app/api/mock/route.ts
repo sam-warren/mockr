@@ -57,6 +57,7 @@ export async function POST(req: Request) {
                 generation_type: 'prompt',
                 generated_data: object,
                 record_count: recordCount,
+                completed_at: new Date().toISOString(),
             })
         },
     })
