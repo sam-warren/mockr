@@ -37,16 +37,48 @@ async function getUserId() {
 
 export async function POST(req: Request) {
     const body = await req.json()
-    const prompt = typeof body === 'string' ? body : body?.prompt
-    if (!prompt || typeof prompt !== 'string') {
-        return new Response('Missing prompt', { status: 400 })
+    
+    // Handle both old format (string) and new format (object)
+    let prompt: string
+    let schema: string | undefined
+    
+    if (typeof body === 'string') {
+        prompt = body
+    } else {
+        prompt = body?.prompt || ''
+        schema = body?.schema || undefined
+    }
+    
+    if (!prompt && !schema) {
+        return new Response('Missing prompt or schema', { status: 400 })
     }
 
     const userId = await getUserId()
 
+    // Build the enhanced prompt
+    let enhancedPrompt = ''
+    
+    if (prompt && schema) {
+        enhancedPrompt = `${prompt}
+
+Please generate the data according to this JSON schema:
+${schema}
+
+IMPORTANT: Your response must be valid JSON that exactly conforms to the provided schema. Do not include any explanatory text, comments, or markdown formatting - only the JSON data.`
+    } else if (schema) {
+        enhancedPrompt = `Generate mock data that conforms to this JSON schema:
+${schema}
+
+IMPORTANT: Your response must be valid JSON that exactly conforms to the provided schema. Do not include any explanatory text, comments, or markdown formatting - only the JSON data.`
+    } else {
+        enhancedPrompt = `${prompt}
+
+IMPORTANT: Your response must be valid JSON. Do not include any explanatory text, comments, or markdown formatting - only the JSON data.`
+    }
+
     const result = streamObject({
         model: openai('gpt-4o-mini'),
-        prompt,
+        prompt: enhancedPrompt,
         // accept anything – structure is unknown
         output: 'no-schema',
         async onFinish({ object }) {
