@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export function NavMain({
   items,
@@ -18,9 +18,11 @@ export function NavMain({
     title: string;
     url: string;
     icon?: Icon;
+    isActive?: boolean;
   }[];
 }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <SidebarGroup>
@@ -31,6 +33,7 @@ export function NavMain({
               tooltip="New Mock"
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
               onClick={() => router.push("/mocks/new")}
+              isActive={pathname === "/mocks/new"}
             >
               <IconCirclePlusFilled />
               <span>New Mock</span>
@@ -43,6 +46,7 @@ export function NavMain({
               <SidebarMenuButton
                 tooltip={item.title}
                 onClick={() => router.push(item.url)}
+                isActive={item.isActive || pathname === item.url}
               >
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>

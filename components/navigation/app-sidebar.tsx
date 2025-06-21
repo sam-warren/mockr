@@ -2,6 +2,7 @@
 
 import { IconDashboard, IconFoldersFilled, IconHelp, IconTemplate } from "@tabler/icons-react";
 import * as React from "react";
+import { usePathname } from "next/navigation";
 
 import { NavMain } from "@/components/navigation/nav-main";
 import { NavSecondary } from "@/components/navigation/nav-secondary";
@@ -23,23 +24,6 @@ const data = {
     email: "sam@mockr.io",
     avatar: "/avatars/sam.jpg",
   },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: IconDashboard,
-    },
-    {
-      title: "My Mocks",
-      url: "/mocks",
-      icon: IconFoldersFilled,
-    },
-    {
-      title: "Templates",
-      url: "/templates",
-      icon: IconTemplate,
-    },
-  ],
   navSecondary: [
     {
       title: "Get Help",
@@ -50,6 +34,29 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+
+  const navMain = [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: IconDashboard,
+      isActive: pathname === "/dashboard",
+    },
+    {
+      title: "My Mocks",
+      url: "/mocks",
+      icon: IconFoldersFilled,
+      isActive: pathname === "/mocks",
+    },
+    {
+      title: "Templates",
+      url: "/templates",
+      icon: IconTemplate,
+      isActive: pathname === "/templates",
+    },
+  ];
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -69,7 +76,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

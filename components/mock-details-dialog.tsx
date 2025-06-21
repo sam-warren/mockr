@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { JsonHighlighter } from "@/components/ui/json-highlighter";
 import { Tables } from "@/database.types";
 import { toast } from "sonner";
 
@@ -169,11 +170,7 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
                 </CardHeader>
                 <CardContent className="flex-1 overflow-hidden">
                   <ScrollArea className="h-full">
-                    <pre className="text-sm bg-muted p-4 rounded-lg overflow-x-auto">
-                      <code>
-                        {JSON.stringify(mock.generated_data, null, 2)}
-                      </code>
-                    </pre>
+                    <JsonHighlighter data={mock.generated_data} />
                   </ScrollArea>
                 </CardContent>
               </Card>
@@ -204,16 +201,11 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
                         <label className="text-sm font-medium text-muted-foreground">
                           Schema
                         </label>
-                        <div className="mt-1 p-3 bg-muted rounded-lg">
-                          <pre className="text-sm overflow-x-auto">
-                            <code>
-                              {JSON.stringify(
-                                mock.generation_schema,
-                                null,
-                                2
-                              )}
-                            </code>
-                          </pre>
+                        <div className="mt-1">
+                          <JsonHighlighter 
+                            data={mock.generation_schema} 
+                            className="mt-0" 
+                          />
                         </div>
                       </div>
                     )}

@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { JsonHighlighter } from "@/components/ui/json-highlighter";
 import { toast } from "sonner";
 
 interface MockGenerationFormProps {
@@ -171,7 +172,7 @@ export function MockGenerationForm({ initialPrompt = "", initialSchema = "" }: M
 
       {/* Output Section */}
       <div className="space-y-6">
-        <Card className="h-fit">
+        <Card className="h-full">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -228,10 +229,8 @@ export function MockGenerationForm({ initialPrompt = "", initialSchema = "" }: M
               )}
 
               {object !== undefined && (
-                <ScrollArea className="h-[400px]">
-                  <pre className="text-sm bg-muted p-4 rounded-lg overflow-x-auto">
-                    <code>{JSON.stringify(object, null, 2)}</code>
-                  </pre>
+                <ScrollArea className="max-h-full">
+                  <JsonHighlighter data={object} />
                 </ScrollArea>
               )}
 
