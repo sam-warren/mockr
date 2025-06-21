@@ -1,15 +1,20 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, CreditCard } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { CreditCard } from "lucide-react";
 
 interface UserProfile {
   id: string;
   display_name: string | null;
   avatar_url: string | null;
-  plan_type: "free" | "credits" | "subscription";
+  plan_type: "free" | "credits";
   stripe_customer_id: string | null;
   created_at: string;
   updated_at: string;
@@ -38,8 +43,6 @@ export function PlanCreditsCard({ profile, credits }: PlanCreditsCardProps) {
         return { name: "Free Plan", color: "bg-gray-100 text-gray-800" };
       case "credits":
         return { name: "Pay-as-you-go", color: "bg-blue-100 text-blue-800" };
-      case "subscription":
-        return { name: "Pro Plan", color: "bg-green-100 text-green-800" };
       default:
         return { name: "Free Plan", color: "bg-gray-100 text-gray-800" };
     }
@@ -54,56 +57,29 @@ export function PlanCreditsCard({ profile, credits }: PlanCreditsCardProps) {
           <CreditCard className="w-5 h-5" />
           Plan & Credits
         </CardTitle>
-        <CardDescription>
-          Manage your subscription and credits
-        </CardDescription>
+        <CardDescription>Manage your subscription and credits</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between p-4 border rounded-lg mb-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <h3 className="font-semibold">{planDisplay.name}</h3>
-              <Badge className={planDisplay.color}>
-                {profile?.plan_type}
-              </Badge>
+              <Badge className={planDisplay.color}>{profile?.plan_type}</Badge>
             </div>
             <p className="text-sm text-muted-foreground">
-              {profile?.plan_type === "free" &&
-                "3 free credits to get started"}
+              {profile?.plan_type === "free" && "3 free credits to get started"}
               {profile?.plan_type === "credits" &&
                 `${credits?.credits_available} credits available`}
-              {profile?.plan_type === "subscription" &&
-                "Unlimited generations included"}
             </p>
           </div>
           <div className="text-right">
             <div className="font-bold">
               {profile?.plan_type === "free" && "Free"}
               {profile?.plan_type === "credits" && "Pay-as-you-go"}
-              {profile?.plan_type === "subscription" && "$29/month"}
             </div>
           </div>
         </div>
-
-        {profile?.plan_type !== "subscription" && (
-          <div className="space-y-2">
-            <Button className="w-full" variant="default">
-              <CreditCard className="w-4 h-4 mr-2" />
-              Buy More Credits
-            </Button>
-            <Button variant="outline" className="w-full">
-              Upgrade to Pro Plan
-            </Button>
-          </div>
-        )}
-
-        {profile?.plan_type === "subscription" && (
-          <Button variant="outline" className="w-full">
-            <ExternalLink className="w-4 h-4 mr-2" />
-            Manage Billing
-          </Button>
-        )}
       </CardContent>
     </Card>
   );
-} 
+}

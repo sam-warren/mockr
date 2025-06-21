@@ -4,7 +4,7 @@ interface UserProfile {
   id: string;
   display_name: string | null;
   avatar_url: string | null;
-  plan_type: "free" | "credits" | "subscription";
+  plan_type: "free" | "credits"
   stripe_customer_id: string | null;
   created_at: string;
   updated_at: string;

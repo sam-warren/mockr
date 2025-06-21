@@ -1,6 +1,11 @@
 "use client";
 
-import { IconDashboard, IconFoldersFilled, IconHelp, IconTemplate } from "@tabler/icons-react";
+import {
+  IconDashboard,
+  IconFoldersFilled,
+  IconHelp,
+  IconTemplate,
+} from "@tabler/icons-react";
 import * as React from "react";
 import { usePathname } from "next/navigation";
 
@@ -64,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="data-[slot=sidebar-menu-button]:!p-1.5 justify-center"
             >
               <Link href="/dashboard">
                 <span className="text-base font-semibold font-mono">

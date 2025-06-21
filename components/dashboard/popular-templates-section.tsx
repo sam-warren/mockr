@@ -30,7 +30,7 @@ export function PopularTemplatesSection({ templates }: PopularTemplatesSectionPr
         <Button variant="outline" asChild>
           <Link href="/templates">
             Browse All Templates
-            <ArrowRight className="h-4 w-4 ml-2" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
       </div>

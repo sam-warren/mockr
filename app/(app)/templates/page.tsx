@@ -18,7 +18,7 @@ export default async function TemplatesPage() {
   return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="space-y-4 md:space-y-0 md:flex md:items-center md:justify-between">
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
             Mock Data Templates
@@ -27,7 +27,7 @@ export default async function TemplatesPage() {
             Choose from pre-built templates to quickly generate realistic mock data
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full md:w-auto">
           <Link href="/mocks/new">
             <Plus className="h-4 w-4" />
             Create Custom Mock
@@ -36,7 +36,7 @@ export default async function TemplatesPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
+      <div className="flex flex-col gap-4 p-4 bg-muted/50 rounded-lg md:flex-row md:items-center">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
@@ -45,7 +45,7 @@ export default async function TemplatesPage() {
           />
         </div>
         <Select defaultValue="all">
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full md:w-[180px]">
             <Filter className="h-4 w-4 mr-2" />
             <SelectValue placeholder="Filter by category" />
           </SelectTrigger>
@@ -63,7 +63,7 @@ export default async function TemplatesPage() {
           </SelectContent>
         </Select>
         <Select defaultValue="name">
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full md:w-[180px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>

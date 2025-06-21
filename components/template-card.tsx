@@ -58,30 +58,30 @@ export function TemplateCard({ template }: TemplateCardProps) {
 
   return (
     <Card 
-      className={`group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
+      className={`group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] relative ${
         isHovered ? 'ring-2 ring-primary/20' : ''
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3 flex-1">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              {getCategoryIcon(template.category)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <CardTitle className="text-lg font-medium truncate">
-                {template.name}
-              </CardTitle>
-              <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                {template.description}
-              </p>
-            </div>
+      {/* Category Badge - positioned absolutely in top right */}
+      <Badge className={`absolute top-3 right-3 z-10 ${getCategoryColor(template.category)}`}>
+        {template.category}
+      </Badge>
+      
+      <CardHeader className="pb-2 pr-20">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+            {getCategoryIcon(template.category)}
           </div>
-          <Badge className={getCategoryColor(template.category)}>
-            {template.category}
-          </Badge>
+          <div className="flex-1 min-w-0">
+            <CardTitle className="text-lg font-medium truncate">
+              {template.name}
+            </CardTitle>
+            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+              {template.description}
+            </p>
+          </div>
         </div>
       </CardHeader>
       
@@ -106,7 +106,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
         >
           <Link href={`/mocks/new?template=${template.id}`}>
             <span>Use Template</span>
-            <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>
       </CardContent>

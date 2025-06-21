@@ -1,8 +1,8 @@
 - [ ] Wire up search, filter, sort functionality on Mocks and Templates pages
 - [X] Fix bug with icon size on my mocks page
-- [ ] Make the sidebar highlight the current route
+- [X] Make the sidebar highlight the current route
 - [X] Remove model from past mock view
-- [ ] Make the mock generation details more user friendly (drawer instead of dialog? or make it a sheet!)
+- [X] Make the mock generation details more user friendly (drawer instead of dialog? or make it a sheet!)
 - [ ] JSON highlighting for schema input and generated data result -> Should match theme of application
 - [ ] Validation on JSON schema input
 - [ ] Check to compare generated data with schema

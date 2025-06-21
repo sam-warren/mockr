@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { Inbox } from "lucide-react"
+import { useState, useMemo } from "react";
+import { Inbox } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { MockCard } from "@/components/mock-card"
-import { MocksFilters } from "./mocks-filters"
-import { Tables } from "@/database.types"
+import { Button } from "@/components/ui/button";
+import { MockCard } from "@/components/mock-card";
+import { MocksFilters } from "./mocks-filters";
+import { Tables } from "@/database.types";
 
-type MockGeneration = Tables<"mock_generations">
+type MockGeneration = Tables<"mock_generations">;
 
 interface MocksWithFiltersProps {
-  initialMocks: MockGeneration[]
+  initialMocks: MockGeneration[];
 }
 
 export function MocksWithFilters({ initialMocks }: MocksWithFiltersProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [sortBy, setSortBy] = useState("newest")
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
 
   const filteredAndSortedMocks = useMemo(() => {
-    let filtered = initialMocks
+    let filtered = initialMocks;
 
     // Apply search filter
     if (searchQuery.trim()) {
@@ -30,14 +30,14 @@ export function MocksWithFilters({ initialMocks }: MocksWithFiltersProps) {
             ?.toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
           mock.generation_type.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      );
     }
 
     // Apply status filter
     if (statusFilter !== "all") {
       filtered = filtered.filter(
         (mock) => mock.generation_status === statusFilter
-      )
+      );
     }
 
     // Apply sorting
@@ -46,27 +46,23 @@ export function MocksWithFilters({ initialMocks }: MocksWithFiltersProps) {
         case "oldest":
           return (
             new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-          )
-        case "records":
-          return b.record_count - a.record_count
-        case "credits":
-          return (b.credits_consumed || 0) - (a.credits_consumed || 0)
+          );
         case "newest":
         default:
           return (
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          )
+          );
       }
-    })
+    });
 
-    return filtered
-  }, [initialMocks, searchQuery, statusFilter, sortBy])
+    return filtered;
+  }, [initialMocks, searchQuery, statusFilter, sortBy]);
 
   const handleClearFilters = () => {
-    setSearchQuery("")
-    setStatusFilter("all")
-    setSortBy("newest")
-  }
+    setSearchQuery("");
+    setStatusFilter("all");
+    setSortBy("newest");
+  };
 
   return (
     <>
@@ -99,8 +95,8 @@ export function MocksWithFilters({ initialMocks }: MocksWithFiltersProps) {
           <div className="text-center space-y-2">
             <h3 className="text-lg font-medium">No matches found</h3>
             <p className="text-muted-foreground max-w-sm">
-              Try adjusting your search query or filters to find what you&apos;re
-              looking for.
+              Try adjusting your search query or filters to find what
+              you&apos;re looking for.
             </p>
           </div>
           <Button variant="outline" onClick={handleClearFilters}>
@@ -126,5 +122,5 @@ export function MocksWithFilters({ initialMocks }: MocksWithFiltersProps) {
         </>
       )}
     </>
-  )
-} 
+  );
+}

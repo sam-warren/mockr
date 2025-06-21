@@ -97,7 +97,7 @@ export default async function DashboardPage() {
         </div>
         <Button size="lg" asChild>
           <Link href="/mocks/new">
-            <Plus className="h-5 w-5 mr-2" />
+            <Plus className="h-5 w-5" />
             Generate New Mock
           </Link>
         </Button>

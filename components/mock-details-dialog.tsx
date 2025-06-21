@@ -96,7 +96,7 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
   };
 
   return (
-    <SheetContent className="w-full sm:max-w-4xl flex flex-col md:p-6">
+    <SheetContent className="w-full sm:max-w-4xl flex flex-col p-2 md:p-6">
       <SheetHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="data" className="flex items-center gap-2">
               <Code2 className="h-4 w-4" />
-              Generated Data
+              JSON
             </TabsTrigger>
             <TabsTrigger value="details" className="flex items-center gap-2">
               <Database className="h-4 w-4" />
@@ -177,54 +177,56 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
             </TabsContent>
 
             <TabsContent value="details" className="h-full">
-              <div className="grid gap-4 h-full">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">
-                      Generation Details
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {mock.generation_prompt && (
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">
-                          Prompt
-                        </label>
-                        <div className="mt-1 p-3 bg-muted rounded-lg">
-                          <p className="text-sm">{mock.generation_prompt}</p>
+              <Card className="h-full flex flex-col">
+                <CardHeader className="flex-shrink-0">
+                  <CardTitle className="text-lg">
+                    Generation Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1 overflow-hidden">
+                  <ScrollArea className="h-full">
+                    <div className="space-y-4">
+                      {mock.generation_prompt && (
+                        <div>
+                          <label className="text-sm font-medium text-muted-foreground">
+                            Prompt
+                          </label>
+                          <div className="mt-1 p-3 bg-muted rounded-lg">
+                            <p className="text-sm">{mock.generation_prompt}</p>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {mock.generation_schema && (
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">
-                          Schema
-                        </label>
-                        <div className="mt-1">
-                          <JsonHighlighter 
-                            data={mock.generation_schema} 
-                            className="mt-0" 
-                          />
+                      {mock.generation_schema && (
+                        <div>
+                          <label className="text-sm font-medium text-muted-foreground">
+                            Schema
+                          </label>
+                          <div className="mt-1">
+                            <JsonHighlighter
+                              data={mock.generation_schema}
+                              className="mt-0"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {mock.error_message && (
-                      <div>
-                        <label className="text-sm font-medium text-destructive">
-                          Error Message
-                        </label>
-                        <div className="mt-1 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
-                          <p className="text-sm text-destructive">
-                            {mock.error_message}
-                          </p>
+                      {mock.error_message && (
+                        <div>
+                          <label className="text-sm font-medium text-destructive">
+                            Error Message
+                          </label>
+                          <div className="mt-1 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                            <p className="text-sm text-destructive">
+                              {mock.error_message}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
+                      )}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             <TabsContent value="metadata" className="h-full">
@@ -238,9 +240,7 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">
-                        ID
-                      </span>
+                      <span className="text-sm text-muted-foreground">ID</span>
                       <code className="text-xs bg-muted px-2 py-1 rounded">
                         {mock.id}
                       </code>
@@ -249,9 +249,7 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
                       <span className="text-sm text-muted-foreground">
                         Type
                       </span>
-                      <Badge variant="secondary">
-                        {mock.generation_type}
-                      </Badge>
+                      <Badge variant="secondary">{mock.generation_type}</Badge>
                     </div>
                   </CardContent>
                 </Card>
@@ -300,13 +298,17 @@ export function MockDetailsSheet({ mock }: MockDetailsSheetProps) {
 }
 
 // Legacy component for backward compatibility
-export function MockDetailsDialog({ mock, open, onOpenChange }: {
+export function MockDetailsDialog({
+  mock,
+  open,
+  onOpenChange,
+}: {
   mock: MockGeneration | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
   if (!mock) return null;
-  
+
   // Legacy wrapper - components should migrate to use the new pattern
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
