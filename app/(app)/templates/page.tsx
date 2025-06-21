@@ -1,18 +1,10 @@
-import { Filter, Plus, Search } from "lucide-react"
+import { Plus } from "lucide-react"
 import Link from "next/link"
 import { Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
-import TemplatesGrid from "./templates-grid"
+import { TemplatesWithFilters } from "@/components/templates/templates-with-filters"
 
 export default async function TemplatesPage() {
   return (
@@ -35,48 +27,9 @@ export default async function TemplatesPage() {
         </Button>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col gap-4 p-4 bg-muted/50 rounded-lg md:flex-row md:items-center">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Search templates..." 
-            className="pl-10" 
-          />
-        </div>
-        <Select defaultValue="all">
-          <SelectTrigger className="w-full md:w-[180px]">
-            <Filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="content">Content</SelectItem>
-            <SelectItem value="users">Users</SelectItem>
-            <SelectItem value="business">Business</SelectItem>
-            <SelectItem value="ecommerce">E-commerce</SelectItem>
-            <SelectItem value="healthcare">Healthcare</SelectItem>
-            <SelectItem value="finance">Finance</SelectItem>
-            <SelectItem value="social">Social</SelectItem>
-            <SelectItem value="events">Events</SelectItem>
-            <SelectItem value="food">Food & Beverage</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select defaultValue="name">
-          <SelectTrigger className="w-full md:w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="name">Name A-Z</SelectItem>
-            <SelectItem value="category">Category</SelectItem>
-            <SelectItem value="popular">Most Popular</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Templates Grid */}
+      {/* Templates with Filters */}
       <Suspense fallback={<TemplatesGridSkeleton />}>
-        <TemplatesGrid />
+        <TemplatesWithFilters />
       </Suspense>
     </div>
   )
@@ -84,12 +37,22 @@ export default async function TemplatesPage() {
 
 function TemplatesGridSkeleton() {
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 9 }).map((_, i) => (
-        <div key={i} className="space-y-3">
-          <Skeleton className="h-[240px] w-full rounded-lg" />
-        </div>
-      ))}
+    <div className="space-y-6">
+      {/* Filter skeleton */}
+      <div className="flex flex-col gap-4 p-4 bg-muted/50 rounded-lg md:flex-row md:items-center">
+        <Skeleton className="h-10 flex-1" />
+        <Skeleton className="h-10 w-full md:w-[180px]" />
+        <Skeleton className="h-10 w-full md:w-[180px]" />
+      </div>
+      
+      {/* Grid skeleton */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div key={i} className="space-y-3">
+            <Skeleton className="h-[240px] w-full rounded-lg" />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

@@ -29,7 +29,13 @@ export function MocksWithFilters({ initialMocks }: MocksWithFiltersProps) {
           mock.generation_prompt
             ?.toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          mock.generation_type.toLowerCase().includes(searchQuery.toLowerCase())
+          mock.generation_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          mock.error_message
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          mock.ai_model_used
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase())
       );
     }
 
