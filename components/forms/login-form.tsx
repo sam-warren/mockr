@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 // import Image from "next/image";
 
@@ -25,9 +25,8 @@ function LoginFormInner({
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get('next') ?? '/dashboard';
+  const next = searchParams.get("next") ?? "/dashboard";
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,8 +40,9 @@ function LoginFormInner({
         password,
       });
       if (error) throw error;
-      // Redirect to the originally requested route or dashboard
-      router.push(next);
+
+      // Use server-side redirect to ensure auth state is synchronized
+      window.location.href = next;
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -77,10 +77,10 @@ function LoginFormInner({
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Log in using your email
+            Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6">
+        <CardContent>
           {/* <form onSubmit={handleSocialLogin}>
             <div className="flex flex-col gap-6">
               {error && <p className="text-sm text-destructive-500">{error}</p>}

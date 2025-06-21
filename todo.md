@@ -14,14 +14,14 @@
 - [ ] Add Google and GitHub OAuth
 - [ ] Add branding to auth pages, 404 page, also add back to home button to auth pages which redirects to /
 - [ ] Build hero page at /
-- [ ] Fix auth bug where clicking login creates a session but does not redirect the to the dashboard or respect the 'next' route query param
+- [X] Fix auth bug where clicking login creates a session but does not redirect the to the dashboard or respect the 'next' route query param
 - [ ] Add stripe integration so users can purchase credits and have their account balance updated right away
 - [ ] Decide on appropriate pricing model for credits (e.g. $5 for 100 credits, $20 for 500 credits, $50 for 1500 credits)
 - [ ] Create pricing marketing page showing discounts for each credit package - show "most popular" on the 500 credit package
-- [ ] Decide on a theme and style the app after that theme - should be poppy, colorful, SaaS-like
+- [X] Decide on a theme and style the app after that theme - should be poppy, colorful, SaaS-like
 - [ ] Add option to decide on number of records and add to prompt (1-20 records?)
 - [ ] Add constraint for maximum size of JSON schema uploaded so we don't run into issues with large schemas
-- [ ] Don't show number of records on the templates page
+- [X] Don't show number of records on the templates page
 - [ ] Make the generated data card scrollable area follow the bottom of the generation until the user scrolls up
-- [ ] Make sure all data fetching is done in server components (re-organize)
+- [X] Make sure all data fetching is done in server components (re-organize)
 - [ ] Add label field to mock generation form so users can label their mocks and generate it by default with AI integration
