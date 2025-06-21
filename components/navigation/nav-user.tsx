@@ -83,8 +83,8 @@ export function NavUser({ user }: NavUserProps) {
     }
   };
 
-  // Use display name from profile if available, otherwise fall back to user.name
-  const displayName = profile?.display_name || user.name;
+  // Use email before @ symbol if no display name is present
+  const displayName = profile?.display_name || user.email.split('@')[0];
   const avatarUrl = profile?.avatar_url || user.avatar;
 
   return (

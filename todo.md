@@ -1,16 +1,16 @@
 - [ ] Wire up search, filter, sort functionality on Mocks and Templates pages
-- [ ] Fix bug with icon size on my mocks page
+- [X] Fix bug with icon size on my mocks page
 - [ ] Make the sidebar highlight the current route
-- [ ] Remove model from past mock view
+- [X] Remove model from past mock view
 - [ ] Make the mock generation details more user friendly (drawer instead of dialog? or make it a sheet!)
 - [ ] JSON highlighting for schema input and generated data result -> Should match theme of application
 - [ ] Validation on JSON schema input
 - [ ] Check to compare generated data with schema
-- [ ] Improve layout of new mock page
+- [X] Improve layout of new mock page
 - [ ] Fix "number of records" display (the response is wrapped as an object so there's always only one record, will need to tweak prompt to always return an array or adjust how we display it by indexing into the object)
-- [ ] Don't show how many credits were used for each mock (each mock costs 1 credit)
+- [X] Don't show how many credits were used for each mock (each mock costs 1 credit)
 - [ ] Make top of page (where sidebar trigger and theme button are) sticky, while preserving rounded corners (this will be challenging for the agent, may need to do it manually)
-- [ ] Remove the ability for a user to change their display name, nav-user.tsx should just show their email before the @ in the case of email sign up
+- [X] Remove the ability for a user to change their display name, nav-user.tsx should just show their email before the @ in the case of email sign up
 - [ ] Add Google and GitHub OAuth
 - [ ] Add branding to auth pages, 404 page, also add back to home button to auth pages which redirects to /
 - [ ] Build hero page at /
@@ -24,3 +24,4 @@
 - [ ] Don't show number of records on the templates page
 - [ ] Make the generated data card scrollable area follow the bottom of the generation until the user scrolls up
 - [ ] Make sure all data fetching is done in server components (re-organize)
+- [ ] Add label field to mock generation form so users can label their mocks and generate it by default with AI integration
