@@ -71,7 +71,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5 justify-center"
             >
-              <Link href="/dashboard">
+              <Link href="/">
                 <span className="text-base font-semibold font-mono">
                   {"{mockr.io}"}
                 </span>

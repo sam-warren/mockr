@@ -13,13 +13,13 @@ credits)
 - [X] Don't show number of records on the templates page
 - [X] Make sure all data fetching is done in server components (re-organize)
 - [ ] Add label field to mock generation form so users can label their mocks and generate it by default with AI
-- [ ] JSON highlighting for schema input and generated data result -> Should match theme of application
+- [X] JSON highlighting for schema input and generated data result -> Should match theme of application
 - [ ] Validation on JSON schema input
 - [ ] Check to compare generated data with schemaintegration
 - [ ] Add Google and GitHub OAuth
 - [ ] Add branding to auth pages, 404 page, also add back to home button to auth pages which redirects to /
-- [ ] Build hero page at /
-- [ ] Fix "number of records" display (the response is wrapped as an object so there's always only one record, will need to tweak prompt to always return an array or adjust how we display it by indexing into the object)
+- [X] Build hero page at /
+- [X] Fix "number of records" display (the response is wrapped as an object so there's always only one record, will need to tweak prompt to always return an array or adjust how we display it by indexing into the object)
 - [ ] Add stripe integration so users can purchase credits and have their account balance updated right away
 - [ ] Decide on appropriate pricing model for credits (e.g. $5 for 100 credits, $20 for 500 credits, $50 for 1500 
 - [ ] Add option to decide on number of records and add to prompt (1-20 records?)

@@ -1,31 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
 import { experimental_useObject as useObject } from "@ai-sdk/react";
-import { z } from "zod";
 import {
-  Sparkles,
-  Wand2,
+  Code2,
   Copy,
   Download,
   RefreshCw,
-  Code2,
+  Sparkles,
+  Wand2,
 } from "lucide-react";
+import { useState } from "react";
+import { z } from "zod";
 
-import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { JsonHighlighter } from "@/components/ui/json-highlighter";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -33,6 +31,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
 interface MockGenerationFormProps {
@@ -221,15 +220,13 @@ export function MockGenerationForm({
               <Wand2 className="h-5 w-5" />
               Generation Settings
             </CardTitle>
-            <CardDescription>
-              Describe what kind of mock data you need
-            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-3">
               <Label htmlFor="prompt" className="text-base font-medium">
                 Prompt *
               </Label>
+              <p className="text-sm text-muted-foreground"></p>
               <Textarea
                 id="prompt"
                 placeholder="Generate user data with names, emails, and addresses..."
@@ -237,10 +234,6 @@ export function MockGenerationForm({
                 onChange={(e) => setPrompt(e.target.value)}
                 className="min-h-32 resize-none"
               />
-              <p className="text-sm text-muted-foreground">
-                Describe the type of mock data you want to generate in natural
-                language.
-              </p>
             </div>
 
             <Separator />
@@ -256,10 +249,6 @@ export function MockGenerationForm({
                 onChange={(e) => setSchema(e.target.value)}
                 className="min-h-40 max-h-60 font-mono text-sm resize-none overflow-y-auto"
               />
-              <p className="text-sm text-muted-foreground">
-                Provide a JSON schema to enforce a specific structure for your
-                mock data.
-              </p>
             </div>
 
             <div className="flex gap-3 pt-4">

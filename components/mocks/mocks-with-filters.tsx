@@ -114,7 +114,7 @@ export function MocksWithFilters({ initialMocks }: MocksWithFiltersProps) {
           {/* Results summary */}
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm text-muted-foreground">
-              Showing {filteredAndSortedMocks.length} of {initialMocks.length}
+              Showing {filteredAndSortedMocks.length} of {initialMocks.length}{" "}
               mock generations
             </p>
           </div>
