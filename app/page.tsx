@@ -413,7 +413,7 @@ export default async function Home() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 bg-background border border-primary/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 text-foreground">
                     {feature.icon}
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
@@ -440,7 +440,7 @@ export default async function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((step, index) => (
               <div key={index} className="text-center group">
-                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 bg-background border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold group-hover:scale-110 transition-transform duration-300 text-foreground">
                   {step.step}
                 </div>
                 <h3 className="text-xl font-semibold mb-4">{step.title}</h3>
