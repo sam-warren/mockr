@@ -31,7 +31,9 @@ export function LandingNavigation({ isAuthenticated }: LandingNavigationProps) {
           Pricing
         </Button>
         <Button
-          onClick={() => router.push(isAuthenticated ? "/dashboard" : "/auth/login")}
+          onClick={() =>
+            router.push(isAuthenticated ? "/dashboard" : "/auth/login")
+          }
           variant="outline"
           size="sm"
         >
@@ -40,4 +42,4 @@ export function LandingNavigation({ isAuthenticated }: LandingNavigationProps) {
       </div>
     </nav>
   );
-} 
+}
